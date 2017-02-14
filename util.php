@@ -4,7 +4,7 @@ function setup() {
 		CREATE TABLE IF NOT EXISTS `Surveys` (
 			ID				INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 			Name			VARCHAR(64),
-			StartTime		DATETIME,
+			StartTime		DATETIME DEFAULT NULL,
 			EndTime			DATETIME
 		)
 	");
@@ -23,12 +23,12 @@ function create_survey($name, $start, $end) {
 			CREATE TABLE IF NOT EXISTS `Collection_{$id}` (
 				ID				INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 				UserID			INT UNSIGNED,
-				Source			ENUM('PC', 'Mobile'),
+				Source			ENUM('PC', 'Mobile') DEFAULT NULL,
 				URL				TEXT,
-				ReferralURL		TEXT,
-				Title			VARCHAR(128),
+				ReferralURL		TEXT DEFAULT NULL,
+				Title			VARCHAR(128) DEFAULT NULL,
 				Time			TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-				Misc			JSON
+				Misc			JSON DEFAULT NULL
 			)
 		");
 		$db->execute("CreateCollectionTable");
