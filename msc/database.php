@@ -1,0 +1,21 @@
+<?php
+$_CONNECTION = array(
+	'LOGIN'=> array(
+		'HOST'=> $_SERVER['RDS_HOSTNAME'],
+		'USER'=> $_SERVER['RDS_USERNAME'],
+		'PASS'=> $_SERVER['RDS_PASSWORD'],
+		'BASE'=> $_SERVER['RDS_DB_NAME']
+	),
+	'POST_EXTENSION'=> array(
+		'HOST'=> $_SERVER['RDS_HOSTNAME'],
+		'USER'=> $_SERVER['RDS_USERNAME'],
+		'PASS'=> $_SERVER['RDS_PASSWORD'],
+		'BASE'=> $_SERVER['RDS_DB_NAME']
+	),
+	'POST_ANDROID'=> array(
+		'HOST'=> $_SERVER['RDS_HOSTNAME'],
+		'USER'=> $_SERVER['RDS_USERNAME'],
+		'PASS'=> $_SERVER['RDS_PASSWORD'],
+		'BASE'=> $_SERVER['RDS_DB_NAME']
+	),
+);
