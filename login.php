@@ -10,17 +10,21 @@ $db = DB::connect(
 	$_CONNECTION['LOGIN']['HOST'],
 	$_CONNECTION['LOGIN']['USER'], 
 	$_CONNECTION['LOGIN']['PASS'], 
-	$_CONNECTION['LOGIN']['BASE'], 
+	$_CONNECTION['LOGIN']['BASE']
 );
 
-$db->prepare("getUser", "SELECT ParticipantID, User_Name, User_Pass FROM `User_Login` WHERE User_Name=? LIMIT 1");
+if($db === null)
+	die("failed");
+
+if( !$db->prepare("getUser", "SELECT ParticipantID, User_Name, User_Pass FROM `User_Data` WHERE User_Name=? LIMIT 1") )
+	die($db->error());
 $db->param("getUser", "s", $user);
 $result = $db->execute("getUser");
 
 if($user && $pass) {
 	if($result !== null) {
 		if(encrypt_password($user, $pass) == $result[0]['User_Pass'])
-			return $result[0]['ParticipantID'];
+			print $result[0]['ParticipantID'];
 		else
 			print "INVALID_PASS";
 	}

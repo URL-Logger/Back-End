@@ -33,10 +33,9 @@ class DB {
 		if(count($this->stmts[$name]['params'])) {
 			$types = "";
 			$params = array();
-			foreach($this->stmts[$name]['params'] as $item) {
-				$this->stmts[$name]['stmt']->bind_param($item[0], $item[1]);
-				$types .= $item[0];
-				$params []= &$item[1];
+			for($i=0; $i<count($this->stmts[$name]['params']); ++$i) {
+				$types .= $this->stmts[$name]['params'][$i][0];
+				$params []= &$this->stmts[$name]['params'][$i][1];
 			}
 			$params = array_merge(array($types), $params);
 			call_user_func_array(array($this->stmts[$name]['stmt'], 'bind_param'), $params);
@@ -45,7 +44,7 @@ class DB {
 		$this->stmts[$name]['stmt']->execute();
 		$result = $this->stmts[$name]['stmt']->get_result();
 		if($result === false)
-			return false;
+			return null;
 		else {
 			$rows = array();
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
