@@ -1,7 +1,7 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT']. "/lib/db.php");
-require_once($_SERVER['DOCUMENT_ROOT']. "/lib/database.php");
-require_once($_SERVER['DOCUMENT_ROOT']. "/lib/secure.php");
+require_once("../lib/db.php");
+require_once("../lib/database.php");
+require_once("../lib/secure.php");
 
 if(isset($_POST['submit'])) {
 	$user = (isset($_POST['user']))? $_POST['user'] : null;

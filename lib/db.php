@@ -43,9 +43,12 @@ class DB {
 		
 		$this->stmts[$name]['stmt']->execute();
 		$result = $this->stmts[$name]['stmt']->get_result();
-		if($result === false)
+		if($result === false) {
+			$this->stmts[$name]['result'] = null;
 			return null;
+		}
 		else {
+			$this->stmts[$name]['result'] = $result;
 			$rows = array();
 			while($row = $result->fetch_array(MYSQLI_ASSOC))
 				$rows []= $row;
@@ -55,6 +58,17 @@ class DB {
 	public function param($name, $type, $value) {
 		$i = count($this->stmts[$name]['params']);
 		$this->stmts[$name]['params'] []= array($type, $value);
+	}
+	public function fields($name) {
+		if(isset($this->stmts[$name]) && $this->stmts[$name]['result'] !== null) {
+			$fields = array();
+			$info = $this->stmts[$name]['result']->fetch_fields();
+			foreach($info as $entry)
+				$fields []= $entry->name;
+			return $fields;
+		}
+		else
+			return null;
 	}
 	
 	public function id($name) {

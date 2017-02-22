@@ -1,8 +1,8 @@
 <?php
 ob_start();
-require_once($_SERVER['DOCUMENT_ROOT']. "/lib/db.php");
-require_once($_SERVER['DOCUMENT_ROOT']. "/msc/database.php");
-require_once($_SERVER['DOCUMENT_ROOT']. "/lib/secure.php");
+require_once("lib/db.php");
+require_once("lib/secure.php");
+require_once("msc/database.php");
 
 $db = DB::connect(
 	$_CONNECTION['LOGIN']['HOST'],
@@ -13,9 +13,12 @@ $db = DB::connect(
 
 $db->prepare("getData", "SELECT * FROM `URL_Data`");
 $result = $db->execute("getData");
+$columns = $db->fields("getData");
+
+$file = date("Y-m-d").".log.csv";
+file_put_contents($file, "");
+
 if($result !== null) {
-	$columns = "";
-	
 	$line = "";
 	for($i=0; $i<count($columns); ++$i) {
 		$line .= $columns[$i];
@@ -23,7 +26,7 @@ if($result !== null) {
 			$line .= "\t";
 	}
 	$line .= "\n";
-	file_put_contents("download.txt", $line);
+	file_put_contents($file, $line);
 	
 	for($i=0; $i<count($result); ++$i) {
 		$line = "";
@@ -34,12 +37,12 @@ if($result !== null) {
 				$line .= "\t";
 		}
 		$line .= "\n";
-		file_put_contents("download.txt", $line, FILE_APPEND);
+		file_put_contents($file, $line, FILE_APPEND);
 	}
 }
 
-header('Content-Type: application/octet-stream');
-header("Content-disposition: attachment; filename='download.csv");
+header("Content-disposition: attachment; filename='{$file}");
 ob_end_clean();
-readfile("download.txt");
+readfile($file);
+unlink($file);
 ?>
