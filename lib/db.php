@@ -25,7 +25,7 @@ class DB {
 		$status = $this->sql->query($query);
 	}
 	public function prepare($name, $query) {
-		$this->stmts[$name] = array('stmt'=>null, 'params'=>array());
+		$this->stmts[$name] = array('stmt'=>null, 'params'=>array(), 'result'=>null);
 		$this->stmts[$name]['stmt'] = $this->sql->prepare($query);
 		return ($this->stmts[$name]['stmt'])? true : false;
 	}
