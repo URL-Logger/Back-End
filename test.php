@@ -6,8 +6,15 @@
 
 <form method="POST" action="getSync.php">
 	<input type="text" name="partid" placeholder="ParticipantID"/><br>
-	<input type="submit" name="submit" value="Sync"/><br>
+	<input type="submit" name="submit" value="getSync"/><br>
 </form>
+
+<form method="POST" action="postSync.php">
+	<input type="text" name="partid1" placeholder="ParticipantID"/><br>
+	<input type="text" name="Timestamp" placeholder="Timestamp" value="<?php print time(); ?>"/><br>
+	<input type="submit" name="submit" value="postSync"/><br>
+</form>
+
 
 <form method="POST" action="post_chrome.php">
 	<input type="text" name="UserID" placeholder="UserID"/><br>
