@@ -11,8 +11,7 @@ $db = DB::connect(
 	$_CONNECTION['LOGIN']['BASE']
 );
 
-if(! $db->prepare("getData", "SELECT * FROM `URL_Data` ORDER BY `URL_TimeStamp` ASC"))
-	die($db->error());
+$db->prepare("getData", "SELECT * FROM `URL_Data`");
 $result = $db->execute("getData");
 $columns = $db->fields("getData");
 
@@ -24,7 +23,7 @@ if($result !== null) {
 	for($i=0; $i<count($columns); ++$i) {
 		$line .= $columns[$i];
 		if($d < count($columns)-1)
-			$line .= ",";
+			$line .= "\t";
 	}
 	$line .= "\n";
 	file_put_contents($file, $line);
@@ -35,7 +34,7 @@ if($result !== null) {
 			$values = array_values($result[$i]);
 			$line .= $values[$d];
 			if($d < count($values)-1)
-				$line .= ",";
+				$line .= "\t";
 		}
 		$line .= "\n";
 		file_put_contents($file, $line, FILE_APPEND);

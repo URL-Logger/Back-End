@@ -6,7 +6,7 @@ require_once("msc/database.php");
 $userid =     (isset($_POST['UserID']))? $_POST['UserID'] : null;
 $appid =      (isset($_POST['AppID']))? $_POST['AppID'] : null;
 $timestamp =  (isset($_POST['Timestamp']))? $_POST['Timestamp'] : "";
-$start =      (isset($_POST['StartTime']))? $_POST['StartTime'] : "";
+$start =      (isset($_POST['StartTime']))? $_POST['StartTime'] : null;
 $end =        (isset($_POST['EndTime']))? $_POST['EndTime'] : null;
 $last =       (isset($_POST['LastTime']))? $_POST['LastTime'] : null;
 $total =      (isset($_POST['TotalTime']))? $_POST['TotalTime'] : null;
@@ -34,7 +34,9 @@ if($userid !== null
 	$db->param("postData", "i", $end);
 	$db->param("postData", "i", $last);
 	$db->param("postData", "i", $total);
-	if( $db->execute("postData") === false )
+	print_r($_POST);
+	print "{$start} {$end} {$last}";
+	//if( $db->execute("postData") === false )
 		die("FAILED");
 	print "SUCCESS";
 }

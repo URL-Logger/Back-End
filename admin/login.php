@@ -1,8 +1,4 @@
 <?php
-require_once("../lib/db.php");
-require_once("../lib/database.php");
-require_once("../lib/secure.php");
-
 if(isset($_POST['submit'])) {
 	$user = (isset($_POST['user']))? $_POST['user'] : null;
 	$pass = (isset($_POST['pass']))? $_POST['pass'] : null;
