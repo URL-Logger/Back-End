@@ -19,16 +19,10 @@ if($userid !== null
   && $urlvid !== null
   && $urlrid !== null
   && $trans !== null) {
-	$db = DB::connect(
-		$_CONNECTION['LOGIN']['HOST'],
-		$_CONNECTION['LOGIN']['USER'], 
-		$_CONNECTION['LOGIN']['PASS'], 
-		$_CONNECTION['LOGIN']['BASE']
-	);
-	$db->prepare("postData", "INSERT INTO `URL_Data` (
-		ParticipantID, URL_Actual, URL_Title, URL_TimeStamp, URL_ID, URL_visitID, URL_refVisitID, URL_Transition)
+	$db = DB::connect($_DB['HOST'], $_DB['WRITE_COLLECTION']['USER'], $_DB['WRITE_COLLECTION']['PASS'], $_DB['DATABASE']);
+	$db->prepare("postData", "INSERT INTO `Collection_Chrome` (
+		UserID, URL, Title, Timestamp, URLID, VisitID, ReferID, Transition)
 		VALUES (?,?,?,?,?,?,?,?)");
-	print $db->error();
 	$db->param("postData", "i", $userid);
 	$db->param("postData", "s", $url);
 	$db->param("postData", "s", $title);

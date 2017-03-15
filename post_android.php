@@ -17,16 +17,10 @@ if($userid !== null
   && $end !== null
   && $last !== null
   && $total !== null) {
-	$db = DB::connect(
-		$_CONNECTION['LOGIN']['HOST'],
-		$_CONNECTION['LOGIN']['USER'], 
-		$_CONNECTION['LOGIN']['PASS'], 
-		$_CONNECTION['LOGIN']['BASE']
-	);
-	$db->prepare("postData", "INSERT INTO `Android_Data` (
-		ParticipantID, Timestamp, AppID, StartTime, EndTime, LastTime, TotalTime)
+	$db = DB::connect($_DB['HOST'], $_DB['WRITE_COLLECTION']['USER'], $_DB['WRITE_COLLECTION']['PASS'], $_DB['DATABASE']);
+	$db->prepare("postData", "INSERT INTO `Collection_Android` (
+		UserID, Timestamp, AppID, StartTime, EndTime, LastTime, TotalTime)
 		VALUES (?,?,?,?,?,?,?)");
-	print $db->error();
 	$db->param("postData", "i", $userid);
 	$db->param("postData", "s", $timestamp);
 	$db->param("postData", "s", $appid);
@@ -34,10 +28,7 @@ if($userid !== null
 	$db->param("postData", "i", $end);
 	$db->param("postData", "i", $last);
 	$db->param("postData", "i", $total);
-	print_r($_POST);
-	print "{$start} {$end} {$last}";
-	//if( $db->execute("postData") === false )
-		die("FAILED");
+	if( $db->execute("postData") === false )
 	print "SUCCESS";
 }
 else

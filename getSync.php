@@ -5,25 +5,20 @@ require_once("msc/database.php");
 
 $partid = (isset($_POST['partid']))? $_POST['partid'] : null;
 
-$db = DB::connect(
-	$_CONNECTION['LOGIN']['HOST'],
-	$_CONNECTION['LOGIN']['USER'], 
-	$_CONNECTION['LOGIN']['PASS'], 
-	$_CONNECTION['LOGIN']['BASE']
-);
+$db = DB::connect($_DB['HOST'], $_DB['READ_USER_LOGIN']['USER'], $_DB['READ_USER_LOGIN']['PASS'], $_DB['DATABASE']);
 
 if($db === null)
 	die("failed");
 
-if( !$db->prepare("getSync", 
-	"SELECT User_LastSync FROM `User_Data` WHERE ParticipantID=? LIMIT 1") )
+if( !$db->prepare("getSync",
+	"SELECT LastSync FROM `User_Login` WHERE ID=? LIMIT 1") )
 		die($db->error());
 $db->param("getSync", "s", $partid);
 $result = $db->execute("getSync");
 
 if($partid) {
 	if($result !== null) {
-		print $result[0]['User_LastSync'];
+		print $result[0]['LastSync'];
 	}
 	else
 		print "INVALID_PARTICIPANTID";

@@ -3,12 +3,11 @@ class DB {
 	private $sql;
 	private $stmts = array();
 	
-	public static function connect($host, $user, $pass, $database, $charset="UTF-8") {
+	public static function connect($host, $user, $pass, $database) {
 		$db = new DB();
 		$db->sql = new mysqli($host, $user, $pass, $database);
 		if($db->sql->connect_errno)
 			return null;
-		$db->sql->set_charset($charset);
 		return $db;
 	}
 	public function database($db) {
@@ -22,7 +21,16 @@ class DB {
 	}
 	
 	public function query($query) {
-		$status = $this->sql->query($query);
+		$result = $this->sql->query($query);
+		if(is_bool($result)) {
+			return $result;
+		}
+		else {
+			$rows = array();
+			while($row = $result->fetch_array(MYSQLI_ASSOC))
+				$rows []= $row;
+			return (count($rows))? $rows : null;
+		}
 	}
 	public function prepare($name, $query) {
 		$this->stmts[$name] = array('stmt'=>null, 'params'=>array(), 'result'=>null);
@@ -43,6 +51,7 @@ class DB {
 		
 		$this->stmts[$name]['stmt']->execute();
 		$result = $this->stmts[$name]['stmt']->get_result();
+		$this->stmts[$name]['params'] = array();
 		if($result === false) {
 			$this->stmts[$name]['result'] = null;
 			return null;
