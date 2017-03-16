@@ -3,5 +3,7 @@
 	<head>
 		<title>Privacy Policy</title>
 	</head>
-	<body style="white-space: pre;"><?php include("policy.html"); ?></body>
+	<body>
+		<div style="white-space: pre-wrap;"><?php include(dirname(__FILE__)."/policy.html"); ?></div>
+	</body>
 </html>

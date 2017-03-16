@@ -13,7 +13,7 @@ html, body {
 	display: block;
 	position: relative;
 	width: 100%;
-	height: 56px;
+	height: 0px;
 	background: #FFF;
 	border-bottom: 1px solid #888;
 }
@@ -21,8 +21,8 @@ html, body {
 #maincontent {
 	display: block;
 	position: relative;
-	width: calc(100% - 150px);
-	height: calc(100% - 56px);
+	width: 100%;
+	height: 100%;
 	background: #FFF;
 	border-left: 1px solid #888;
 	border-right: 1px solid #888;

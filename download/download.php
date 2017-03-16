@@ -49,7 +49,7 @@ foreach($f_daterange as $filter) {
 	$end = $_POST['daterange_end_'.$filter];
 	if($start && $end) {
 		if($set != "") $set .= " or ";
-		$set .= "DATE(Timestamp)>=? and DATE(Timestamp)<=?";
+		$set .= "(DATE(Timestamp)>=? and DATE(Timestamp)<=?)";
 		$params []= $start;
 		$params []= $end;
 	}

@@ -110,7 +110,6 @@
 		<script><?php include("src/scripts/download.php"); ?></script>
 	</head>
 	<body onload="update()">
-		<div id="header"></div>
 		<div id="maincontent">
 			<form id="form" class="section" method='POST' action='download.php' target='_blank' style="width: 300px; height: 100%; border-right: 1px solid #888;">
 				<select id="sel_filter" onchange="addFilter()">
