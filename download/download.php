@@ -16,7 +16,7 @@ $f_userid = (!empty($_POST['userid']))? $_POST['userid'] : array();
 
 $clause_limit = "";
 $limit = 0;
-$max_limit = 25;
+$max_limit = 150;
 if(isset($_POST['limit']) && $_POST['limit'] > 0) {
 	if($preview)
 		$limit = ($_POST['limit'] < $max_limit)? $_POST['limit'] : $max_limit;

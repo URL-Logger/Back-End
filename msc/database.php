@@ -2,7 +2,7 @@
 require_once("users.php");
 
 $_DB = array(
-	'HOST'=> "logger-main.cm9mres9mcqi.us-west-1.rds.amazonaws.com",
+	'HOST'=> "main.cm9mres9mcqi.us-west-1.rds.amazonaws.com",
 	'DATABASE'=> "main",
 	'ROOT'=> array(
 		'USER'=> "logger_root",
