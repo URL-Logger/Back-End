@@ -12,7 +12,7 @@ if(isset($_POST['login'])) {
 		if($result !== null) {
 			if($result[0]['Secure'] !== null) {}
 			if($pass == $result[0]['Password']) {
-				$_SESSION['user'] = $result[0]['ID'];
+				$_SESSION['ADMIN_USER'] = $result[0]['ID'];
 				header("Refresh: 0");
 				exit;
 			}
