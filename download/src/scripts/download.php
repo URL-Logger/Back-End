@@ -35,10 +35,21 @@ function tileDateRange(id) {
 }
 
 function tileUserId(id) {
-	return `<div class='item' id='filter_`+id+`'><input type='hidden' name='userid[]' value='`+id+`'/>
+	return `<div class='item' id='filter_`+id+`' title='Separate IDs by spaces'><input type='hidden' name='userid[]' value='`+id+`'/>
 		<div class='title'>Users by ID</div>
 		<div class='content'>
 			<input type='text' name='userid_`+id+`' onchange='update()'/></br>
+		</div>
+		<a class='exit' onclick="removeFilter('filter_`+id+`')">x</a>
+	</div>
+	`;
+}
+
+function tileKeywords(id) {
+	return `<div class='item' id='filter_`+id+`' title='Separate keywords by spaces'><input type='hidden' name='keywords[]' value='`+id+`'/>
+		<div class='title'>Keywords</div>
+		<div class='content'>
+			<input type='text' name='keywords_`+id+`' onchange='update()'/></br>
 		</div>
 		<a class='exit' onclick="removeFilter('filter_`+id+`')">x</a>
 	</div>
@@ -68,6 +79,10 @@ function addFilter() {
 			break;
 		case "User ID":
 			container.innerHTML = tileUserId(filterId++);
+			filters.appendChild(container);
+			break;
+		case "Keywords":
+			container.innerHTML = tileKeywords(filterId++);
 			filters.appendChild(container);
 			break;
 		default:

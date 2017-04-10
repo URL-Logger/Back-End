@@ -1,18 +1,11 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
-?>
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
 <!DOCTYPE HTML>
 <html>
 	<head>
 		<title>Control Panel</title>
 		<style>
 			<?php include("src/styles/layout.php"); ?>
-			
-			::-webkit-scrollbar { width: 3px; height: 3px; }
-			::-webkit-scrollbar-button { width: 0px; height: 0px; }
-			::-webkit-scrollbar-thumb { background: #444; }
-			::-webkit-scrollbar-track { background: transparent; }
-			::-webkit-scrollbar-corner { background: transparent; }
-			
 			#sel_filter {
 				display: block;
 				position: relative;
@@ -93,14 +86,15 @@
 			table {
 				width: auto;
 				height: auto;
+				padding: 0;
 				border-collapse: collapse;
 			}
 			table td {
 				max-width: 250px;
 				border-bottom: 1px solid #CCC;
-				padding: 4px 16px 4px 16px;
+				padding: 4px 8px 4px 8px;
 				white-space: pre;
-				overflow: hidden;
+				overflow: auto;
 			}
 			table td.header {
 				font-weight: bold;
@@ -118,6 +112,7 @@
 					<option>Date</option>
 					<option>Date Range</option>
 					<option>User ID</option>
+					<option>Keywords</option>
 				</select>
 				<div id="list_filters"></div>
 				<input id="b_download" type="button" onclick="document.getElementById('form').submit()" value="Download"/>

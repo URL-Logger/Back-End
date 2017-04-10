@@ -2,9 +2,9 @@
 ob_start();
 set_time_limit(0);
 
-require_once("../lib/db.php");
-require_once("../lib/secure.php");
-require_once("../msc/database.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/secure.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
 $db = DB::connect($_DB['HOST'], $_DB['READ_COLLECTION']['USER'], $_DB['READ_COLLECTION']['PASS'], $_DB['DATABASE']);
 
@@ -13,6 +13,7 @@ $preview = isset($_REQUEST['preview']);
 $f_date = (!empty($_POST['date']))? $_POST['date'] : array();
 $f_daterange = (!empty($_POST['daterange']))? $_POST['daterange'] : array();
 $f_userid = (!empty($_POST['userid']))? $_POST['userid'] : array();
+$f_keywords = (!empty($_POST['keywords']))? $_POST['keywords'] : array();
 
 $clause_limit = "";
 $limit = 0;
@@ -60,13 +61,30 @@ if($set) $clause .= " and ({$set})";
 $set = "";
 foreach($f_userid as $filter) {
 	$data = $_POST['userid_'.$filter];
-	$split = explode(',', $data);
+	$split = explode(' ', $data);
 	foreach($split as $item) {
 		$item = trim($item);
 		if($item) {
 			if($set != "") $set .= " or ";
 			$set .= "UserID=?";
 			$params []= $item;
+		}
+	}
+}
+if($set) $clause .= " and ({$set})";
+
+// Keywords Filter
+$set = "";
+foreach($f_keywords as $filter) {
+	$data = $_POST['keywords_'.$filter];
+	$split = explode(' ', $data);
+	foreach($split as $item) {
+		$item = trim($item);
+		if($item) {
+			if($set != "") $set .= " and ";
+			$set .= "(URL LIKE ? or Title LIKE ?)";
+			$params []= "%{$item}%";
+			$params []= "%{$item}%";
 		}
 	}
 }
@@ -86,16 +104,22 @@ if(!$preview) {
 	file_put_contents($file, "");
 }
 
+$ignore_cols = array();
+
 if($preview) echo "<table>";
 $line = "";
 if($preview) echo "<tr>";
 for($i=0; $i<count($columns); ++$i) {
-	if($preview) echo "<td class='header'>{$columns[$i]}</td>";
-	else {
-		$line .= $columns[$i];
-		if($d < count($columns)-1)
-			$line .= ",";
+	if($columns[$i] != "ID") {
+		if($preview) echo "<td class='header'>{$columns[$i]}</td>";
+		else {
+			$line .= $columns[$i];
+			if($d < count($columns)-1)
+				$line .= ",";
+		}
 	}
+	else
+		$ignore_cols []= $i;
 }
 if($preview) echo "</tr>";
 else {
@@ -109,11 +133,13 @@ if($result !== null) {
 		if($preview) echo "<tr>";
 		$values = array_values($result[$i]);
 		for($d=0; $d<count($result[$i]); ++$d) {
-			if($preview) echo "<td>". htmlspecialchars($values[$d]). "</td>";
-			else {
-				$line .= $values[$d];
-				if($d < count($values)-1)
-					$line .= ",";
+			if(!in_array($d, $ignore_cols)) {
+				if($preview) echo "<td>". htmlspecialchars($values[$d]). "</td>";
+				else {
+					$line .= $values[$d];
+					if($d < count($values)-1)
+						$line .= ",";
+				}
 			}
 		}
 		if($preview) echo "</tr>";

@@ -40,7 +40,6 @@ if(isset($_POST['login'])) {
 			<input type="text" name="user" placeholder="Email"/></br>
 			<input type="password" name="pass" placeholder="Password"/></br>
 			<input type="submit" name="login" value="Login"/></br>
-			<input type="submit" name="recover" value="Recover"/></br>
 		</form>
 	</body>
 </html>

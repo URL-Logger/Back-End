@@ -1,23 +1,18 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
+$DBU = $_DB['READ_USER_LOGIN'];
+$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
+$result = $db->query("SELECT COUNT(*) as count FROM `User_Login` LIMIT 1");
+$num_users = ($result)? $result[0]['count'] : 0;
 ?>
-<!DOCTYPE HTML>
-<html>
-	<head>
-		<title></title>
-		<style></style>
-		<script></script>
-	</head>
-	<body>
-		<a href="#incomplete">Statistics</a></br>
-		<a href="#incomplete">Visualization</a></br>
-		<a href="download/">Download</a></br>
-		</br>
-		<a href="#incomplete">User Accounts</a></br>
-		<a href="#incomplete">Admin Accounts</a></br>
-		<a href="#incomplete">Settings</a></br>
-		</br>
-		<a href="#incomplete">My Account</a></br>
-		</br>
-		<a href="?logout">Logout</a></br>
-	</body>
-</html>
+<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
+<style>
+#maincontent {
+	display: block;
+	width: 100%;
+	height: auto;
+	padding: 8px;
+}
+</style>
+<div id="maincontent">
+Users: <?=$num_users;?></br>
+</div>

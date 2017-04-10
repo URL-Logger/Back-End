@@ -1,7 +1,7 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
-$DBU = $_DB['READ_USER_LOGIN'];
+$DBU = $_DB['READ_ADMIN_LOGIN'];
 $db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-$result = $db->query("SELECT ID, Email FROM `User_Login` ORDER BY ID");
+$result = $db->query("SELECT ID, Email FROM `Admin_Login` ORDER BY ID");
 ?>
 <style>
 table tr.header td {
@@ -16,6 +16,7 @@ table tr td {
 <table>
 	<tr class="header">
 		<td>Account</td>
+		<td>User</td>
 		<td></td>
 		<td></td>
 	</tr>
@@ -24,8 +25,9 @@ table tr td {
 		foreach($result as $entry) {
 			echo "<tr>
 				<td>{$entry['Email']}</td>
-				<td><a href=\"/users/edit/?user={$entry['ID']}\">Edit</a></td>
-				<td><a href=\"/users/delete/?user={$entry['ID']}\">Delete</a></td>
+				<td></td>
+				<td><a href=\"/manage/edit/?user={$entry['ID']}\">Edit</a></td>
+				<td><a href=\"/manage/delete/?user={$entry['ID']}\">Delete</a></td>
 			</tr>";
 		}
 	}
