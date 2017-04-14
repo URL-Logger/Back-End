@@ -1,7 +1,7 @@
 <?php
-require_once("lib/db.php");
-require_once("lib/secure.php");
-require_once("msc/database.php");
+require_once("src/lib/db.php");
+require_once("src/scripts/secure.php");
+require_once("src/misc/database.php");
 
 $partid = (isset($_POST['partid']))? $_POST['partid'] : null;
 $timestamp = (isset($_POST['Timestamp']))? $_POST['Timestamp'] : null;

@@ -1,16 +1,16 @@
 <?php
-require_once("lib/db.php");
-require_once("lib/secure.php");
-require_once("msc/database.php");
+require_once("src/lib/db.php");
+require_once("src/scripts/secure.php");
+require_once("src/misc/database.php");
 
-$userid =    (isset($_POST['UserID']))? $_POST['UserID'] : null;
-$url =       (isset($_POST['URL']))? $_POST['URL'] : null;
-$title =     (isset($_POST['Title']))? $_POST['Title'] : "";
-$timestamp = (isset($_POST['Timestamp']))? $_POST['Timestamp'] : null;
-$urlid =     (isset($_POST['URLID']))? $_POST['URLID'] : null;
-$urlvid =    (isset($_POST['URLVID']))? $_POST['URLVID'] : null;
-$urlrid =    (isset($_POST['URLRID']))? $_POST['URLRID'] : null;
-$trans = 	 (isset($_POST['Transition']))? $_POST['Transition'] : null;
+$userid =    (isset($_POST['UserID']))? htmlspecialchars($_POST['UserID'] : null;
+$url =       (isset($_POST['URL']))? htmlspecialchars($_POST['URL'] : null;
+$title =     (isset($_POST['Title']))? htmlspecialchars($_POST['Title'] : "";
+$timestamp = (isset($_POST['Timestamp']))? htmlspecialchars($_POST['Timestamp'] : null;
+$urlid =     (isset($_POST['URLID']))? htmlspecialchars($_POST['URLID'] : null;
+$urlvid =    (isset($_POST['URLVID']))? htmlspecialchars($_POST['URLVID'] : null;
+$urlrid =    (isset($_POST['URLRID']))? htmlspecialchars($_POST['URLRID'] : null;
+$trans = 	 (isset($_POST['Transition']))? htmlspecialchars($_POST['Transition'] : null;
 
 if($userid !== null
   && $url !== null
