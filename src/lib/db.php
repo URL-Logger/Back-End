@@ -80,7 +80,7 @@ class DB {
 			return null;
 	}
 	
-	public function id($name) {
+	public function id() {
 		return $this->sql->insert_id;
 	}
 	public function error() {
