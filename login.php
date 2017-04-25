@@ -19,12 +19,12 @@ $result = $db->execute("getUser");
 if($user && $pass) {
 	if($result !== null) {
 		if(encrypt_password($user, $pass) == $result[0]['Password'])
-			print $result[0]['ID'];
+			echo $result[0]['ID'];
 		else
-			print "INVALID_PASS";
+			echo "INVALID_PASS";
 	}
 	else
-		print "INVALID_USER";
+		echo "INVALID_USER";
 }
 else
-	print "BAD_PARAMS";
+	echo "BAD_PARAMS";

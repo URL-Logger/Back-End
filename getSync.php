@@ -18,11 +18,11 @@ $result = $db->execute("getSync");
 
 if($partid) {
 	if($result !== null) {
-		print $result[0]['LastSync'];
+		echo $result[0]['LastSync'];
 	}
 	else
-		print "INVALID_PARTICIPANTID";
+		echo "INVALID_PARTICIPANTID";
 }
 else
-	print "BAD_PARAMS";
+	echo "BAD_PARAMS";
 

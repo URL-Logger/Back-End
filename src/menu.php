@@ -10,7 +10,7 @@ html,body {
 	font-family: "Yu Gothic UI";
 }
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar { width: 6px; height: 4px; }
 ::-webkit-scrollbar-button { width: 0px; height: 0px; }
 ::-webkit-scrollbar-thumb { background: #444; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -88,8 +88,8 @@ function dropdown_toggle(item) {
 		<td><a class="button" href="/">Home</a></td>
 		<td><div id="dd_download" class="dropdown left">
 			<table class="menu">
-				<tr><td><a class="button" href="/download/">Browser Data</a></td></tr>
-				<tr><td><a class="button" href="">Mobile Data</a></td></tr>
+				<tr><td><a class="button" href="/download/?browser">Browser Data</a></td></tr>
+				<tr><td><a class="button" href="/download/?mobile">Mobile Data</a></td></tr>
 			</table>
 		</div><a class="button" onclick="dropdown_toggle('dd_download')">Download</a></td>
 		<td><div id="dd_manage" class="dropdown left">

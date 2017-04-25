@@ -32,7 +32,7 @@ if($userid !== null
 	$db->param("postData", "s", $trans);
 	if( $db->execute("postData") === false )
 		die("FAILED");
-	print "SUCCESS";
+	echo "SUCCESS";
 }
 else
-	print "BAD_PARAMS";
+	echo "BAD_PARAMS";

@@ -11,7 +11,7 @@
 
 <form method="POST" action="postSync.php">
 	<input type="text" name="partid1" placeholder="ParticipantID"/><br>
-	<input type="text" name="Timestamp" placeholder="Timestamp" value="<?php print time(); ?>"/><br>
+	<input type="text" name="Timestamp" placeholder="Timestamp" value="<?php print date("Y-m-d H:i:s"); ?>"/><br>
 	<input type="submit" name="submit" value="postSync"/><br>
 </form>
 
@@ -20,7 +20,7 @@
 	<input type="text" name="UserID" placeholder="UserID"/><br>
 	<input type="text" name="URL" placeholder="URL"/><br>
 	<input type="text" name="Title" placeholder="Title"/><br>
-	<input type="text" name="Timestamp" placeholder="Timestamp" value="<?php print time(); ?>"/><br>
+	<input type="text" name="Timestamp" placeholder="Timestamp" value="<?php print date("Y-m-d H:i:s"); ?>"/><br>
 	<input type="text" name="URLID" placeholder="URL ID"/><br>
 	<input type="text" name="URLVID" placeholder="URL Visit ID"/><br>
 	<input type="text" name="URLRID" placeholder="URL Refer ID"/><br>
@@ -30,11 +30,11 @@
 
 <form method="POST" action="post_android.php">
 	<input type="text" name="UserID" placeholder="UserID"/><br>
-	<input type="text" name="Timestamp" placeholder="Timestamp" value="<?php print time(); ?>"/><br>
 	<input type="text" name="AppID" placeholder="Application ID"/><br>
-	<input type="text" name="StartTime" placeholder="Start Time"><br>
+	<input type="text" name="StartTime" placeholder="Start Time" value="<?php print time(); ?>"/><br>
 	<input type="text" name="EndTime" placeholder="End Time"/><br>
 	<input type="text" name="LastTime" placeholder="Last Time"/><br>
 	<input type="text" name="TotalTime" placeholder="Total Time"/><br>
+	<input type="text" name="Launch" placeholder="Launch"/><br>
 	<input type="submit" name="submit" value="Send"/><br>
 </form>

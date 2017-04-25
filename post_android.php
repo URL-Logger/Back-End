@@ -1,6 +1,5 @@
 <?php
 require_once("src/lib/db.php");
-require_once("src/scripts/secure.php");
 require_once("src/misc/database.php");
 
 $userid =     (isset($_POST['UserID']))? htmlspecialchars($_POST['UserID'], ENT_QUOTES) : null;
@@ -9,7 +8,7 @@ $start =      (isset($_POST['StartTime']))? htmlspecialchars($_POST['StartTime']
 $end =        (isset($_POST['EndTime']))? htmlspecialchars($_POST['EndTime'], ENT_QUOTES) : null;
 $last =       (isset($_POST['LastTime']))? htmlspecialchars($_POST['LastTime'], ENT_QUOTES) : null;
 $total =      (isset($_POST['TotalTime']))? htmlspecialchars($_POST['TotalTime'], ENT_QUOTES) : null;
-$launch =      (isset($_POST['Launch']))? htmlspecialchars($_POST['Launch'], ENT_QUOTES) : null;
+$launch =     (isset($_POST['Launch']))? htmlspecialchars($_POST['Launch'], ENT_QUOTES) : null;
 
 if($userid !== null
   && $appid !== null
@@ -19,9 +18,9 @@ if($userid !== null
   && $total !== null
   && $launch !== null) {
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_COLLECTION']['USER'], $_DB['WRITE_COLLECTION']['PASS'], $_DB['DATABASE']);
-	$db->prepare("postData", "INSERT INTO `Collection_Android` (
+	if(!$db->prepare("postData", "INSERT INTO `Collection_Android` (
 		UserID, AppID, StartTime, EndTime, LastTime, TotalTime, Launch)
-		VALUES (?,?,?,?,?,?)");
+		VALUES (?,?,?,?,?,?,?)")) die($db->error());
 	$db->param("postData", "s", $userid);
 	$db->param("postData", "s", $appid);
 	$db->param("postData", "s", $start);
@@ -30,9 +29,9 @@ if($userid !== null
 	$db->param("postData", "s", $total);
 	$db->param("postData", "s", $launch);
 	if( $db->execute("postData") !== false )
-		print "SUCCESS";
+		echo "SUCCESS";
 	else
-		print "FAILURE";
+		echo "FAILURE";
 }
 else
-	print "BAD_PARAMS";
+	echo "BAD_PARAMS";

@@ -17,7 +17,7 @@ if($partid !== null && $timestamp !== null) {
 	
 	if( $db->execute("postSync") === false )
 		die("FAILED");
-	print "SUCCESS";
+	echo "SUCCESS";
 }
 else
-	print "BAD_PARAMS";
+	echo "BAD_PARAMS";
