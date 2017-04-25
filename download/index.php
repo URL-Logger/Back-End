@@ -1,5 +1,12 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php");
+
+if(isset($_GET['browser']))
+	$dataset = "browser";
+else if(isset($_GET['mobile']))
+	$dataset = "mobile";
+else exit;
+?>
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -83,20 +90,20 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
 				cursor: pointer;
 			}
 			
-			table {
+			table.preview {
 				width: auto;
 				height: auto;
 				padding: 0;
 				border-collapse: collapse;
 			}
-			table td {
+			table.preview td {
 				max-width: 250px;
 				border-bottom: 1px solid #CCC;
 				padding: 4px 8px 4px 8px;
 				white-space: pre;
 				overflow: auto;
 			}
-			table td.header {
+			table.preview td.header {
 				font-weight: bold;
 			}
 		</style>

@@ -26,6 +26,15 @@ $_DB_USERS = array(
 			'User_Info'=>"SELECT(ID), INSERT, UPDATE"
 		)
 	),
+	"d_u"=> array(
+		'Allow'=>array("%"),
+		'Name'=>"DELETE_USER",
+		'Password'=>"PXqs13e5lRFp1JBOby6LbZUq",
+		'Access'=>array(
+			'User_Login'=>"SELECT(ID), DELETE",
+			'User_Info'=>"SELECT(ID), DELETE"
+		)
+	),
 	"r_collection"=> array(
 		'Allow'=>array("%"),
 		'Name'=>"READ_COLLECTION",
@@ -68,6 +77,14 @@ $_DB_USERS = array(
 			'Admin_Login'=>"SELECT(ID), INSERT, UPDATE"
 		)
 	),
+	"d_a"=> array(
+		'Allow'=>array("%"),
+		'Name'=>"DELETE_ADMIN",
+		'Password'=>"YsIRnxjn2lcR9F8wlHBUSslu",
+		'Access'=>array(
+			'Admin_Login'=>"SELECT(ID), DELETE"
+		)
+	),
 	"r_s_login"=> array(
 		'Allow'=>array("%"),
 		'Name'=>"READ_SECURITY_LOGIN",
@@ -84,20 +101,12 @@ $_DB_USERS = array(
 			'Security_Salt'=>"SELECT(ID), INSERT, UPDATE"
 		)
 	),
-	"r_s_recover"=> array(
+	"d_s_login"=> array(
 		'Allow'=>array("%"),
-		'Name'=>"READ_SECURITY_RECOVER",
-		'Password'=>"tt3FQMvPo7UXe8kbe2254hZp",
+		'Name'=>"DELETE_SECURITY_LOGIN",
+		'Password'=>"wBLsrDZJZESx9PRZ2TBoVx2v",
 		'Access'=>array(
-			'Security_Recover_Admin'=>"SELECT"
-		)
-	),
-	"w_s_recover"=> array(
-		'Allow'=>array("%"),
-		'Name'=>"WRITE_SECURITY_RECOVER",
-		'Password'=>"xoXxtey8LP7CITAYQphHeaIe",
-		'Access'=>array(
-			'Security_Recover_Admin'=>"SELECT(ID), INSERT, UPDATE"
+			'Security_Salt'=>"SELECT(ID), DELETE"
 		)
 	),
 	"r_opportunities"=> array(

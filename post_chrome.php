@@ -1,6 +1,5 @@
 <?php
 require_once("src/lib/db.php");
-require_once("src/scripts/secure.php");
 require_once("src/misc/database.php");
 
 $userid =    (isset($_POST['UserID']))? htmlspecialchars($_POST['UserID'], ENT_QUOTES) : null;

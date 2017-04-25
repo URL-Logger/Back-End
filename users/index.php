@@ -12,7 +12,7 @@ table tr td {
 }
 </style>
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-<input type="text" name="search" placeholder="Search"/></br>
+<a href="add/">Add Primitive User</a></br>
 <table>
 	<tr class="header">
 		<td>Account</td>
@@ -24,8 +24,8 @@ table tr td {
 		foreach($result as $entry) {
 			echo "<tr>
 				<td>{$entry['Email']}</td>
-				<td><a href=\"/users/edit/?user={$entry['ID']}\">Edit</a></td>
-				<td><a href=\"/users/delete/?user={$entry['ID']}\">Delete</a></td>
+				<td><a href=\"/users/edit/?id={$entry['ID']}\">Edit</a></td>
+				<td><a href=\"/users/delete/?id={$entry['ID']}\">Delete</a></td>
 			</tr>";
 		}
 	}

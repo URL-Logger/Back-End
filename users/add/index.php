@@ -1,0 +1,1 @@
+<?php require("../edit/index.php"); ?>

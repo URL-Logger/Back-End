@@ -6,6 +6,12 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/secure.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
+if(isset($_REQUEST['browser']))
+	$dataset = "Collection_Chrome";
+else if(isset($_REQUEST['mobile']))
+	$dataset = "Collection_Android";
+else exit;
+
 $db = DB::connect($_DB['HOST'], $_DB['READ_COLLECTION']['USER'], $_DB['READ_COLLECTION']['PASS'], $_DB['DATABASE']);
 
 $preview = isset($_REQUEST['preview']);
@@ -90,8 +96,8 @@ foreach($f_keywords as $filter) {
 }
 if($set) $clause .= " and ({$set})";
 
-$db->prepare("getFields", "SELECT * FROM `Collection_Chrome` LIMIT 1");
-if(! $db->prepare("getData", "SELECT * FROM `Collection_Chrome` {$clause} ORDER BY `Timestamp` ASC {$clause_limit}"))
+$db->prepare("getFields", "SELECT * FROM `{$dataset}` LIMIT 1");
+if(! $db->prepare("getData", "SELECT * FROM `{$dataset}` {$clause} ORDER BY `Timestamp` ASC {$clause_limit}"))
 	die($db->error());
 foreach($params as $param)
 	$db->param("getData", "s", $param);
@@ -106,7 +112,7 @@ if(!$preview) {
 
 $ignore_cols = array();
 
-if($preview) echo "<table>";
+if($preview) echo "<table class='preview'>";
 $line = "";
 if($preview) echo "<tr>";
 for($i=0; $i<count($columns); ++$i) {

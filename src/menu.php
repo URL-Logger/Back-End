@@ -19,6 +19,7 @@ html,body {
 .menu {
 	position: relative;
 	width: 100%;
+	z-index: 100;
 	height: auto;
 	background: #FFF;
 	border-collapse: collapse;
@@ -89,12 +90,15 @@ function dropdown_toggle(item) {
 			<table class="menu">
 				<tr><td><a class="button" href="/download/">Browser Data</a></td></tr>
 				<tr><td><a class="button" href="">Mobile Data</a></td></tr>
-				<tr><td><a class="button" href="">Aggregate Data</a></td></tr>
 			</table>
 		</div><a class="button" onclick="dropdown_toggle('dd_download')">Download</a></td>
-		<td><a class="button" href="/users/">Users</a></td>
+		<td><div id="dd_manage" class="dropdown left">
+			<table class="menu">
+				<tr><td><a class="button" href="/users/">User Accounts</a></td></tr>
+				<tr><td><a class="button" href="/manage/">Admin Accounts</a></td></tr>
+			</table>
+		</div><a class="button" onclick="dropdown_toggle('dd_manage')">Manage</a></td>
 		<td class="spacing"></td>
-		<td><a class="button" href="/manage/">Accounts</a></td>
 		<td><a class="button" onclick="dropdown_toggle('dd_account')">Options</a><div id="dd_account" class="dropdown right">
 			<table class="menu">
 				<tr><td><a class="button" href="/account/">My Account</a></td></tr>

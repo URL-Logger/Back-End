@@ -10,21 +10,32 @@ if(isset($_POST['login'])) {
 		$db->param("GetUserLogin", "s", $user);
 		$result = $db->execute("GetUserLogin");
 		if($result !== null) {
-			if($result[0]['Secure'] !== null) {}
-			if($pass == $result[0]['Password']) {
-				$_SESSION['ADMIN_USER'] = $result[0]['ID'];
-				header("Refresh: 0");
-				exit;
+			if($result[0]['Secure'] !== null) {
+				$dbs = DB::connect($_DB['HOST'], $_DB['READ_SECURITY_LOGIN']['USER'], $_DB['READ_SECURITY_LOGIN']['PASS'], $_DB['DATABASE']);
+				$dbs->prepare("getSalt", "SELECT Salt FROM `Security_Salt` WHERE ID=?");
+				$dbs->param("getSalt", "i", $result[0]['Secure']);
+				$res_salt = $dbs->execute("getSalt");
+				if($res_salt) {
+					if(password_verify($pass. $res_salt[0]['Salt'], $result[0]['Password'])) {
+						$_SESSION['ADMIN_USER'] = $result[0]['ID'];
+						header("Refresh: 0");
+						exit;
+					}
+					else $out = "Invalid login credentials.</br>";
+				}
+				else $out = "An internal error has occurred.</br>";
 			}
-			else
-				print "Invalid password";
+			else {
+				if($pass == $result[0]['Password']) {
+					$_SESSION['ADMIN_USER'] = $result[0]['ID'];
+					header("Refresh: 0");
+					exit;
+				}
+				else $out = "Invalid login credentials.";
+			}
 		}
-		else print "User does not exist.";
+		else $out = "Invalid login credentials.";
 	}
-	header("Refresh: 2");
-	exit;
-} else if(isset($_POST['recover'])) {
-	
 }
 ?>
 <!DOCTYPE HTML>
