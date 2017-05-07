@@ -1,6 +1,8 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php");
 
+deny_on('D');
+
 if(isset($_GET['browser']))
 	$dataset = "browser";
 else if(isset($_GET['mobile']))

@@ -133,7 +133,7 @@ switch($dataset) {
 }
 	
 $db->prepare("getFields", "SELECT * FROM `{$dataset}` LIMIT 1");
-if(! $db->prepare("getData", "SELECT * FROM `{$dataset}` {$clause} ORDER BY `{$orderby}` ASC {$clause_limit}"))
+if(! $db->prepare("getData", "SELECT * FROM `{$dataset}` {$clause} ORDER BY `{$orderby}` DESC {$clause_limit}"))
 	die($db->error());
 foreach($params as $param)
 	$db->param("getData", "s", $param);

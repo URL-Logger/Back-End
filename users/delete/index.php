@@ -1,6 +1,8 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
 $_USER = empty($_GET['id'])? 0 : $_GET['id'];
 
+deny_on('U');
+
 $DBU = $_DB['READ_USER_INFO'];
 $db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
 $db->prepare("getUserInfo", "SELECT * FROM `User_Login` WHERE ID=? LIMIT 1");

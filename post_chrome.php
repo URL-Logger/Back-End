@@ -2,6 +2,7 @@
 require_once("src/lib/db.php");
 require_once("src/misc/database.php");
 
+# get parameters
 $userid =    (isset($_POST['UserID']))? htmlspecialchars($_POST['UserID'], ENT_QUOTES) : null;
 $url =       (isset($_POST['URL']))? htmlspecialchars($_POST['URL'], ENT_QUOTES) : null;
 $title =     (isset($_POST['Title']))? htmlspecialchars($_POST['Title'], ENT_QUOTES) : "";
@@ -30,9 +31,5 @@ if($userid !== null
 	$db->param("postData", "s", $urlvid);
 	$db->param("postData", "s", $urlrid);
 	$db->param("postData", "s", $trans);
-	if( $db->execute("postData") === false )
-		die("FAILED");
-	echo "SUCCESS";
+	echo ($db->execute("postData") !== false)? 1 : 0;
 }
-else
-	echo "BAD_PARAMS";

@@ -4,6 +4,7 @@ session_start();
 
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/user.php");
 
 if(empty($_SESSION['ADMIN_USER'])) {
 	require_once("{$_SERVER['DOCUMENT_ROOT']}/src/login.php");

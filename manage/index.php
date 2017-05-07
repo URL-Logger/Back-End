@@ -1,4 +1,7 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
+
+deny_on('a');
+
 $DBU = $_DB['READ_ADMIN_LOGIN'];
 $db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
 $search = empty($_GET['q'])? "" : $_GET['q'];

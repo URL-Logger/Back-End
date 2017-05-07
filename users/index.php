@@ -1,4 +1,7 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
+
+deny_on('u');
+
 $DBU = $_DB['READ_USER_LOGIN'];
 $db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
 $result = $db->query("SELECT ID, Email FROM `User_Login` ORDER BY ID");
@@ -15,6 +18,7 @@ table tr td {
 <a href="add/">Add Primitive User</a></br>
 <table>
 	<tr class="header">
+		<td>ID</td>
 		<td>Account</td>
 		<td></td>
 		<td></td>
@@ -23,6 +27,7 @@ table tr td {
 	if($result) {
 		foreach($result as $entry) {
 			echo "<tr>
+				<td>{$entry['ID']}</td>
 				<td>{$entry['Email']}</td>
 				<td><a href=\"/users/edit/?id={$entry['ID']}\">Edit</a></td>
 				<td><a href=\"/users/delete/?id={$entry['ID']}\">Delete</a></td>

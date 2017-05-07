@@ -2,6 +2,8 @@
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php");
 
+deny_on('U');
+
 # Get User ID
 $_USER = empty($_GET['id'])? 0 : $_GET['id'];
 
