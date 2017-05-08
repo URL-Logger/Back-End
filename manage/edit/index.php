@@ -6,7 +6,7 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php");
 if(!isset($_USER)) {
 	$_USER = empty($_GET['id'])? 0 : $_GET['id'];
 	if($_USER == 0)
-		deny_on('A');
+		deny_on('aA');
 }
 else if($_USER == -1) {
 	if(isset($_SESSION['ADMIN_USER']))

@@ -1,7 +1,7 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
 $user = $_GET['id'];
 
-deny_on('A');
+deny_on('aA');
 
 $DBU = $_DB['READ_ADMIN_LOGIN'];
 $db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
