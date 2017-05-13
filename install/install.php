@@ -4,7 +4,8 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
 $db = DB::connect($_DB['HOST'], $_DB['ROOT']['USER'], $_DB['ROOT']['PASS'], $_DB['DATABASE']);
 
-if(isset($_GET['all']) || isset($_GET['tables'])) {
+if(isset($_GET['all']) || isset($_GET['table_accounts'])) {
+	$db->query("DROP TABLE IF EXISTS `Admin_Login`;");
 	if(! $db->prepare("CreateAdminLogin",
 		"CREATE TABLE IF NOT EXISTS `Admin_Login` (
 			ID				INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -16,14 +17,19 @@ if(isset($_GET['all']) || isset($_GET['tables'])) {
 			PRIMARY KEY (ID),
 			UNIQUE KEY (Email)
 		);")) die($db->error());
-
+	$db->execute("CreateAdminLogin");
+	
+	$db->query("DROP TABLE IF EXISTS `Security_Salt`;");
 	if(! $db->prepare("CreateSecuritySalt",
 		"CREATE TABLE IF NOT EXISTS `Security_Salt` (
 			ID				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			Salt			VARCHAR(24) NOT NULL,
 			PRIMARY KEY (ID)
 		);")) die($db->error());
-
+	$db->execute("CreateSecuritySalt");
+}
+if(isset($_GET['all']) || isset($_GET['table_collection_chrome'])) {
+	$db->query("DROP TABLE IF EXISTS `Collection_Chrome`;");
 	if(! $db->prepare("CreateCollectionChrome",
 		"CREATE TABLE IF NOT EXISTS `Collection_Chrome` (
 			ID				INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -37,29 +43,29 @@ if(isset($_GET['all']) || isset($_GET['tables'])) {
 			Transition		TEXT NOT NULL,
 			PRIMARY KEY (ID)
 		);")) die($db->error());
-
+	$db->execute("CreateCollectionChrome");
+}
+if(isset($_GET['all']) || isset($_GET['table_collection_android'])) {
+	$db->query("DROP TABLE IF EXISTS `Collection_Android`;");
 	if(! $db->prepare("CreateCollectionAndroid",
 		"CREATE TABLE IF NOT EXISTS `Collection_Android` (
 			ID				INT UNSIGNED NOT NULL AUTO_INCREMENT,
 			UserID			INT UNSIGNED NOT NULL,
 			AppID			VARCHAR(64) NOT NULL,
-			StartTime		INT UNSIGNED DEFAULT 0,
-			EndTime			INT UNSIGNED DEFAULT 0,
-			LastTime		INT UNSIGNED DEFAULT 0,
+			StartTime		TIMESTAMP,
+			EndTime			TIMESTAMP,
+			LastTime		TIMESTAMP,
 			TotalTime		INT UNSIGNED DEFAULT 0,
 			Launch			INT UNSIGNED DEFAULT 0,
 			PRIMARY KEY (ID)
 		);")) die($db->error());
-		
-	// ---- Execute Statements ---- //
-	//$db->execute("CreateAdminLogin");
-	$db->execute("CreateSecuritySalt");
-	//$db->execute("CreateCollectionChrome");
-	//$db->execute("CreateCollectionAndroid");
+	$db->execute("CreateCollectionAndroid");
 }
 
 if(isset($_GET['all']) || isset($_GET['users'])) {
 	foreach($_DB_USERS as $user=>$props) {
+		foreach($props['Allow'] as $allow)
+			$db->query("DROP USER '{$user}'@'{$allow}'");
 		foreach($props['Allow'] as $allow) {
 			$db->query("CREATE USER '{$user}'@'{$allow}' IDENTIFIED BY '{$props['Password']}'");
 			foreach($props['Access'] as $table=>$permissions)

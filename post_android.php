@@ -23,10 +23,11 @@ if(is_array($userid)
 	&& count($userid) == count($start)
 	&& count($userid) == count($end)
 	&& count($userid) == count($last)
-	&& count($userid) == count($total) ) {
+	&& count($userid) == count($total)
+	&& count($userid) == count($launch)	) {
 		
 	for($i=0; $i<count($userid); ++$i)
-		$rows []= array('userid'=>$userid[$i], 'appid'=>$appid[$i], 'start'=>$start[$i], 'end'=>$end[$i], 'last'=>$last[$i], 'total'=>$total[$i]);
+		$rows []= array('userid'=>$userid[$i], 'appid'=>$appid[$i], 'start'=>$start[$i], 'end'=>$end[$i], 'last'=>$last[$i], 'total'=>$total[$i], 'launch'=>$launch[$i]);
 }
 # if parameters are not arrays, create 1 row
 if(!is_array($userid)
@@ -34,8 +35,16 @@ if(!is_array($userid)
 	&& !is_array($start)
 	&& !is_array($end)
 	&& !is_array($last)
-	&& !is_array($total)) {
-	$rows []= array('userid'=>$userid, 'appid'=>$appid, 'start'=>$start, 'end'=>$end, 'last'=>$last, 'total'=>$total);
+	&& !is_array($total)
+	&& !is_array($launch)
+	&& $userid !== null
+	&& $appid !== null
+	&& $start !== null
+	&& $end !== null
+	&& $last !== null
+	&& $total !== null
+	&& $launch !== null) {
+	$rows []= array('userid'=>$userid, 'appid'=>$appid, 'start'=>$start, 'end'=>$end, 'last'=>$last, 'total'=>$total, 'launch'=>$launch);
 }
 
 # if rows exists, write rows to database
@@ -45,7 +54,7 @@ if(count($rows) > 0) {
 	# create insert query
 	$query = "";
 	for($i=0; $i<count($rows); ++$i) {
-		$query .= "(?,?,?,?,?,?)";
+		$query .= "(?,?,?,?,?,?,?)";
 		if($i<count($rows)-1)
 			$query .= ", ";
 	}
@@ -58,11 +67,12 @@ if(count($rows) > 0) {
 	# pass values to query
 	foreach($rows as $row) {
 		$db->param("postData", "i", $row['userid']);
-		$db->param("postData", "s", $row['appid'];
+		$db->param("postData", "s", $row['appid']);
 		$db->param("postData", "s", $row['start']);
 		$db->param("postData", "s", $row['end']);
 		$db->param("postData", "s", $row['last']);
 		$db->param("postData", "s", $row['total']);
+		$db->param("postData", "s", $row['launch']);
 	}
 	
 	# exeucte database query
