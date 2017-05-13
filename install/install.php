@@ -4,6 +4,7 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
 $db = DB::connect($_DB['HOST'], $_DB['ROOT']['USER'], $_DB['ROOT']['PASS'], $_DB['DATABASE']);
 
+# if tags `all or `table_accounts are set, reinstall Admin_Login
 if(isset($_GET['all']) || isset($_GET['table_accounts'])) {
 	$db->query("DROP TABLE IF EXISTS `Admin_Login`;");
 	if(! $db->prepare("CreateAdminLogin",
@@ -18,7 +19,9 @@ if(isset($_GET['all']) || isset($_GET['table_accounts'])) {
 			UNIQUE KEY (Email)
 		);")) die($db->error());
 	$db->execute("CreateAdminLogin");
-	
+
+# if tags `all or `table_security are set, reinstall Security_Salt
+if(isset($_GET['all']) || isset($_GET['table_security'])) {
 	$db->query("DROP TABLE IF EXISTS `Security_Salt`;");
 	if(! $db->prepare("CreateSecuritySalt",
 		"CREATE TABLE IF NOT EXISTS `Security_Salt` (
@@ -28,6 +31,8 @@ if(isset($_GET['all']) || isset($_GET['table_accounts'])) {
 		);")) die($db->error());
 	$db->execute("CreateSecuritySalt");
 }
+
+# if tags `all or `table_collection_chrome are set, reinstall Collection_Chrome
 if(isset($_GET['all']) || isset($_GET['table_collection_chrome'])) {
 	$db->query("DROP TABLE IF EXISTS `Collection_Chrome`;");
 	if(! $db->prepare("CreateCollectionChrome",
@@ -45,6 +50,8 @@ if(isset($_GET['all']) || isset($_GET['table_collection_chrome'])) {
 		);")) die($db->error());
 	$db->execute("CreateCollectionChrome");
 }
+
+# if tags `all or `table_collection_android are set, reinstall Collection_Android
 if(isset($_GET['all']) || isset($_GET['table_collection_android'])) {
 	$db->query("DROP TABLE IF EXISTS `Collection_Android`;");
 	if(! $db->prepare("CreateCollectionAndroid",
@@ -62,6 +69,7 @@ if(isset($_GET['all']) || isset($_GET['table_collection_android'])) {
 	$db->execute("CreateCollectionAndroid");
 }
 
+# if tags `all or `users are set, reinstall database users
 if(isset($_GET['all']) || isset($_GET['users'])) {
 	foreach($_DB_USERS as $user=>$props) {
 		foreach($props['Allow'] as $allow)
@@ -74,9 +82,7 @@ if(isset($_GET['all']) || isset($_GET['users'])) {
 	}
 }
 
+# if tags `all or `values are set, insert default values
 if(isset($_GET['all']) || isset($_GET['values'])) {
 	$db->query("INSERT INTO `Admin_Login` (Email, Password) VALUES ('admin', 'admin')");
-	$db->query("INSERT INTO `Admin_Login` (Email, Password) VALUES ('ajshelton@yukiri.net', 'admin')");
-	
-	$db->query("INSERT INTO `User_Login` (Email, Password) VALUES ('test@test.com', 'testpass'), ('test2@test.com', 'testpass'), ('test3@test.com', 'testpass'), ('test4@test.com', 'testpass')");
 }

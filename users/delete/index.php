@@ -13,7 +13,7 @@ if(!$result || isset($_POST['cancel'])) {
 	exit;
 }
 
-if($_POST['delete']) {
+if(isset($_POST['delete'])) {
 	$DBU = $_DB['DELETE_USER'];
 	$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
 	$db->prepare("deleteLogin", "DELETE FROM `User_Login` WHERE ID=? LIMIT 1");
@@ -26,12 +26,23 @@ if($_POST['delete']) {
 	exit;
 }
 ?>
-Are you sure you want to delete the following user?</br>
-<?php
-echo "ID: {$result[0]['ID']}</br>";
-echo "Email: {$result[0]['Email']}</br>";
-?>
-<form method="POST">
-	<input type="submit" name="delete" value="Delete User"/>
-	<input type="submit" name="cancel" value="Cancel"/>
-</form>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Utelem - Remove Account</title>
+	</head>
+	<body>
+		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
+		
+		Are you sure you want to delete the following user?</br>
+		<?php
+		echo "ID: {$result[0]['ID']}</br>";
+		echo "Email: {$result[0]['Email']}</br>";
+		?>
+		</br>
+		<form method="POST">
+			<input type="submit" name="delete" value="Delete User" style="background: #FAA;"/>
+			<input type="submit" name="cancel" value="Cancel Operation"/>
+		</form>
+	</body>
+</html>

@@ -13,6 +13,9 @@ $urlrid =    (isset($_POST['URLRID']))? htmlspecialchars($_POST['URLRID'], ENT_Q
 $trans = 	 (isset($_POST['Transition']))? htmlspecialchars($_POST['Transition'], ENT_QUOTES) : null;
 
 $rows = array();
+
+# if all parameters are arrays fo the same size,
+# copy array values into $rows
 if(is_array($userid)
 	&& is_array($url)
 	&& is_array($title)
@@ -29,10 +32,12 @@ if(is_array($userid)
 	&& count($userid) == count($urlrid)
 	&& count($userid) == count($trans) ) {
 		
+	# add all array entries to $rows
 	for($i=0; $i<count($userid); ++$i)
 		$rows []= array('userid'=>$userid[$i], 'url'=>$url[$i], 'title'=>$title[$i], 'timestamp'=>$timestamp[$i],
 			'urlid'=>$urlid[$i], 'urlvid'=>$urlvid[$i], 'urlrid'=>$urlrid[$i], 'trans'=>$trans[$i]);
 }
+# if only a single record is sent, add that record to $rows
 else if(!is_array($userid)
 	&& !is_array($url)
 	&& !is_array($title)
@@ -49,15 +54,22 @@ else if(!is_array($userid)
 	&& $urlvid !== null
 	&& $urlrid !== null
 	&& $trans !== null) {
+		
+	# add the single entry to $rows
 	$rows []= array('userid'=>$userid, 'url'=>$url, 'title'=>$title[$i], 'timestamp'=>$timestamp[$i],
 		'urlid'=>$urlid[$i], 'urlvid'=>$urlvid[$i], 'urlrid'=>$urlrid[$i], 'trans'=>$trans[$i]);
+		
 }
+# if input is invalid and DEBUG is set, write failed status
+else if(isset($_POST['DEBUG']) {
+	echo "Invalid Input";
+}	
 
 # if rows exists, write rows to database
 if(count($rows) > 0) {
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_COLLECTION']['USER'], $_DB['WRITE_COLLECTION']['PASS'], $_DB['DATABASE']);
 	
-	# create insert query
+	# create value placeholders for INSERT query
 	$query = "";
 	for($i=0; $i<count($rows); ++$i) {
 		$query .= "(?,?,?,?,?,?,?,?)";
@@ -65,7 +77,7 @@ if(count($rows) > 0) {
 			$query .= ", ";
 	}
 	
-	# prepare database query
+	# prepare database query to insert values
 	if(!$db->prepare("postData", "INSERT INTO `Collection_Chrome` (
 		UserID, URL, Title, Timestamp, URLID, VisitID, ReferID, Transition)
 		VALUES {$query}")) die($db->error());
@@ -82,6 +94,11 @@ if(count($rows) > 0) {
 		$db->param("postData", "s", $trans);
 	}
 	
-	# exeucte database query
+	# exeucte database query and write status
 	echo ($db->execute("postData") !== false)? 1 : 0;
+}
+
+# if input is empty and DEBUG is set, write failed status
+else if(isset($_POST['DEBUG']) {
+	echo "No Input";
 }

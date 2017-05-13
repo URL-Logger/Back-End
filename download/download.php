@@ -129,7 +129,7 @@ switch($dataset) {
 	case "Collection_Chrome":
 		$orderby = "Timestamp"; break;
 	case "Collection_Android":
-		$orderby = "StartTime"; break;
+		$orderby = "ID"; break;
 }
 	
 $db->prepare("getFields", "SELECT * FROM `{$dataset}` LIMIT 1");

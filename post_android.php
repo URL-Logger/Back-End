@@ -11,7 +11,8 @@ $last =       (isset($_POST['LastTime']))? htmlspecialchars($_POST['LastTime'], 
 $total =      (isset($_POST['TotalTime']))? htmlspecialchars($_POST['TotalTime'], ENT_QUOTES) : null;
 $launch =     (isset($_POST['Launch']))? htmlspecialchars($_POST['Launch'], ENT_QUOTES) : null;
 
-# if parameters are arrays, translate arrays to rows
+# if all parameters are arrays fo the same size,
+# copy array values into $rows
 $rows = array();
 if(is_array($userid)
 	&& is_array($appid)
@@ -26,11 +27,12 @@ if(is_array($userid)
 	&& count($userid) == count($total)
 	&& count($userid) == count($launch)	) {
 		
+	# add all array entries to $rows
 	for($i=0; $i<count($userid); ++$i)
 		$rows []= array('userid'=>$userid[$i], 'appid'=>$appid[$i], 'start'=>$start[$i], 'end'=>$end[$i], 'last'=>$last[$i], 'total'=>$total[$i], 'launch'=>$launch[$i]);
 }
-# if parameters are not arrays, create 1 row
-if(!is_array($userid)
+# if only a single record is sent, add that record to $rows
+else if(!is_array($userid)
 	&& !is_array($appid)
 	&& !is_array($start)
 	&& !is_array($end)
@@ -44,14 +46,20 @@ if(!is_array($userid)
 	&& $last !== null
 	&& $total !== null
 	&& $launch !== null) {
+		
+	# add the single entry to $rows
 	$rows []= array('userid'=>$userid, 'appid'=>$appid, 'start'=>$start, 'end'=>$end, 'last'=>$last, 'total'=>$total, 'launch'=>$launch);
+}
+# if input is invalid and DEBUG is set, write failed status
+else if(isset($_POST['DEBUG']) {
+	echo "Invalid Input";
 }
 
 # if rows exists, write rows to database
 if(count($rows) > 0) {
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_COLLECTION']['USER'], $_DB['WRITE_COLLECTION']['PASS'], $_DB['DATABASE']);
 	
-	# create insert query
+	# create value placeholders for INSERT query
 	$query = "";
 	for($i=0; $i<count($rows); ++$i) {
 		$query .= "(?,?,?,?,?,?,?)";
@@ -59,7 +67,7 @@ if(count($rows) > 0) {
 			$query .= ", ";
 	}
 	
-	# prepare database query
+	# prepare database query to insert values
 	if(!$db->prepare("postData", "INSERT INTO `Collection_Android` (
 		UserID, AppID, StartTime, EndTime, LastTime, TotalTime, Launch)
 		VALUES {$query}")) die($db->error());
@@ -75,6 +83,11 @@ if(count($rows) > 0) {
 		$db->param("postData", "s", $row['launch']);
 	}
 	
-	# exeucte database query
+	# exeucte database query and write status
 	echo ($db->execute("postData") !== false)? 1 : 0;
+}
+
+# if input is empty and DEBUG is set, write failed status
+else if(isset($_POST['DEBUG']) {
+	echo "No Input";
 }

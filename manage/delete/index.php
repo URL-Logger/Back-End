@@ -29,25 +29,38 @@ else if(isset($_POST['cancel'])) {
 	exit;
 }
 ?>
-<style>
-table tr.header td {
-	font-weight: bold;
-}
-table tr td {
-	padding: 2px 8px 2px 8px;
-}
-</style>
-<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-Are you sure you want to delete the following account?</br>
-</br>
-<?php
-echo "{$result[0]['ID']}</br>";
-echo "{$result[0]['Name']}</br>";
-echo "{$result[0]['Email']}</br>";
-?>
-</br>
-<form method="POST">
-	<input type="submit" name="delete" value="Delete Account"/>
-	<input type="submit" name="cancel" value="Cancel"/>
-</form>
-</br>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Utelem - Remove Account</title>
+		<style>
+		table tr.header td {
+			font-weight: bold;
+		}
+		table tr td {
+			padding: 2px 8px 2px 8px;
+		}
+		</style>
+	</head>
+	<body>
+		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php");
+
+		if($user != 1) {
+			echo "Are you sure you want to delete the following account?</br></br>";
+			echo "Name: {$result[0]['Name']}</br>";
+			echo "Email: {$result[0]['Email']}</br>";
+			echo "</br>";
+		}
+		else {
+			echo "You may not delete the primary administrator account.</br></br>";
+		}
+		?>
+		<form method="POST">
+			<?php if($user != 1)
+				echo "<input type=\"submit\" name=\"delete\" value=\"Delete Account\" style=\"background: #FAA;\"/>";
+			?>
+			<input type="submit" name="cancel" value="Cancel Operation"/>
+		</form>
+		</br>
+	</body>
+</html>

@@ -130,30 +130,37 @@ if(isset($_POST['submit'])) {
 	else $errors []= "EmailRequired";
 }
 ?>
-
-<a href='..'/>Back</a></br>
-<?php
-if(isset($_GET['Success']))
-	echo "Account has been updated.</br>";
-else if(isset($_GET['Created']))
-	echo "Account has been created.</br>";
-else if(count($errors) > 0) {
-	# Display errors
-	if(in_array("EmailRequired", $errors))
-		echo "An email is required.";
-	if(in_array("UnmatchedPasswords", $errors))
-		echo "Passwords do not match.";
-}
-else
-	echo "</br>";
-?>
-<div id="maincontent">
-	<form method="POST">
-		<input type="text" placeholder="Email" name="email" value="<?=$email?>"/><br>
-		<br>
-		<input type="password" name="newPassword" placeholder="New Password"/><br>
-		<input type="password" name="confirmPassword" placeholder="Confirm Password"/><br>
-		<br>
-		<input type="submit" name="submit" value="<?php echo ($_USER > 0)? "Save" : "Create"; ?>"/></br
-	</form>
-</div>
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Utelem - <?php echo ($_USER == 0)? "Add" : "Edit"; ?> Account</title>
+	</head>
+	<body>
+		<a href='..'/>Back</a></br>
+		<?php
+		if(isset($_GET['Success']))
+			echo "Account has been updated.</br>";
+		else if(isset($_GET['Created']))
+			echo "Account has been created.</br>";
+		else if(count($errors) > 0) {
+			# Display errors
+			if(in_array("EmailRequired", $errors))
+				echo "An email is required.";
+			if(in_array("UnmatchedPasswords", $errors))
+				echo "Passwords do not match.";
+		}
+		else
+			echo "</br>";
+		?>
+		<div id="maincontent">
+			<form method="POST">
+				<input type="text" placeholder="Email" name="email" value="<?=$email?>"/><br>
+				<br>
+				<input type="password" name="newPassword" placeholder="New Password"/><br>
+				<input type="password" name="confirmPassword" placeholder="Confirm Password"/><br>
+				<br>
+				<input type="submit" name="submit" value="<?php echo ($_USER > 0)? "Save" : "Create"; ?>"/></br
+			</form>
+		</div>
+	</body>
+</html>

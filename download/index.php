@@ -12,7 +12,7 @@ else exit;
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Control Panel</title>
+		<title>Utelem - Download</title>
 		<style>
 			<?php include("src/styles/layout.php"); ?>
 			#sel_filter {

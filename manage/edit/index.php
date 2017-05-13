@@ -154,33 +154,41 @@ if(isset($_POST['submit'])) {
 	else $out = "Email is required.";
 }
 ?>
-<a href='..'/>Back</a></br>
-<?php
-if(isset($_GET['Created'])) $out = "Account has been created.";
-if(isset($_GET['Success'])) $out = "Account has been updated.";
-if(isset($out)) echo $out;
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Utelem - <?php echo ($_USER == 0)? "Add" : (($is_self)? "My" : "Edit"); ?> Account</title>
+	</head>
+	<body>
+		<a href='..'/>Back</a></br>
+		<?php
+		if(isset($_GET['Created'])) $out = "Account has been created.";
+		if(isset($_GET['Success'])) $out = "Account has been updated.";
+		if(isset($out)) echo $out;
 
-$disabled = (($is_self && !has_privilege('M')) || !has_privilege('A'));
-?>
-<div id="maincontent">
-	<form method="POST">
-		<input type="text" placeholder="Email" name="email" value="<?=$email?>" <?php if($disabled) echo "disabled"; ?>/></br>
-		</br>
-		<input type="text" placeholder="Name" name="name" value="<?=$name?>" <?php if($disabled) echo "disabled"; ?>/></br>
-		</br>
-		<input type="password" name="newPassword" placeholder="New Password" <?php if($disabled) echo "disabled"; ?>/></br>
-		<input type="password" name="confirmPassword" placeholder="Confirm Password" <?php if($disabled) echo "disabled"; ?>/></br>
-		</br>
-		<b>Privileges</b></br>
-		<input type="hidden" name="privilege[]" value="-"/>
-		<input type="checkbox" name="privilege[]" value="D" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'D') !== FALSE || $permissions == "*" || $_USER == 0) echo " checked"; ?>> Download Collection</br>
-		<input type="checkbox" name="privilege[]" value="M" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'M') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Own Account</br>
-		<input type="checkbox" name="privilege[]" value="u" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'u') !== FALSE || $permissions == "*" || $_USER == 0) echo " checked"; ?>> View User Accounts</br>
-		<input type="checkbox" name="privilege[]" value="U" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'U') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit User Accounts</br>
-		<input type="checkbox" name="privilege[]" value="a" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'a') !== FALSE || $permissions == "*") echo " checked"; ?>> View Admin Accounts</br>
-		<input type="checkbox" name="privilege[]" value="A" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'A') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Admin Accounts</br>
-		<input type="checkbox" name="privilege[]" value="P" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'P') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Admin Privileges</br>
-		</br>
-		<?php if(!$disabled) echo "<input type=\"submit\" name=\"submit\" value='". (($_USER > 0)? "Save" : "Create"). "'". (($disabled)? " disabled" : ""). "/></br>"; ?>
-	</form>
-</div>
+		$disabled = (($is_self && !has_privilege('M')) || !has_privilege('A'));
+		?>
+		<div id="maincontent">
+			<form method="POST">
+				<input type="text" placeholder="Email" name="email" value="<?=$email?>" <?php if($disabled) echo "disabled"; ?>/></br>
+				</br>
+				<input type="text" placeholder="Name" name="name" value="<?=$name?>" <?php if($disabled) echo "disabled"; ?>/></br>
+				</br>
+				<input type="password" name="newPassword" placeholder="New Password" <?php if($disabled) echo "disabled"; ?>/></br>
+				<input type="password" name="confirmPassword" placeholder="Confirm Password" <?php if($disabled) echo "disabled"; ?>/></br>
+				</br>
+				<b>Privileges</b></br>
+				<input type="hidden" name="privilege[]" value="-"/>
+				<input type="checkbox" name="privilege[]" value="D" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'D') !== FALSE || $permissions == "*" || $_USER == 0) echo " checked"; ?>> Download Collection</br>
+				<input type="checkbox" name="privilege[]" value="M" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'M') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Own Account</br>
+				<input type="checkbox" name="privilege[]" value="u" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'u') !== FALSE || $permissions == "*" || $_USER == 0) echo " checked"; ?>> View User Accounts</br>
+				<input type="checkbox" name="privilege[]" value="U" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'U') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit User Accounts</br>
+				<input type="checkbox" name="privilege[]" value="a" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'a') !== FALSE || $permissions == "*") echo " checked"; ?>> View Admin Accounts</br>
+				<input type="checkbox" name="privilege[]" value="A" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'A') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Admin Accounts</br>
+				<input type="checkbox" name="privilege[]" value="P" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'P') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Admin Privileges</br>
+				</br>
+				<?php if(!$disabled) echo "<input type=\"submit\" name=\"submit\" value='". (($_USER > 0)? "Save" : "Create"). "'". (($disabled)? " disabled" : ""). "/></br>"; ?>
+			</form>
+		</div>
+	</body>
+</html>
