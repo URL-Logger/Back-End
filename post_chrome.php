@@ -61,7 +61,7 @@ else if(!is_array($userid)
 		
 }
 # if input is invalid and DEBUG is set, write failed status
-else if(isset($_POST['DEBUG']) {
+else if(isset($_POST['DEBUG'])) {
 	echo "Invalid Input";
 }	
 
@@ -99,6 +99,6 @@ if(count($rows) > 0) {
 }
 
 # if input is empty and DEBUG is set, write failed status
-else if(isset($_POST['DEBUG']) {
+else if(isset($_POST['DEBUG'])) {
 	echo "No Input";
 }

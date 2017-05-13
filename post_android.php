@@ -51,7 +51,7 @@ else if(!is_array($userid)
 	$rows []= array('userid'=>$userid, 'appid'=>$appid, 'start'=>$start, 'end'=>$end, 'last'=>$last, 'total'=>$total, 'launch'=>$launch);
 }
 # if input is invalid and DEBUG is set, write failed status
-else if(isset($_POST['DEBUG']) {
+else if(isset($_POST['DEBUG'])) {
 	echo "Invalid Input";
 }
 
@@ -88,6 +88,6 @@ if(count($rows) > 0) {
 }
 
 # if input is empty and DEBUG is set, write failed status
-else if(isset($_POST['DEBUG']) {
+else if(isset($_POST['DEBUG'])) {
 	echo "No Input";
 }

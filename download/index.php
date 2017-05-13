@@ -15,6 +15,18 @@ else exit;
 		<title>Utelem - Download</title>
 		<style>
 			<?php include("src/styles/layout.php"); ?>
+			#refresh {
+				width: 100%;
+				height: 32px;
+				line-height: 32px;
+				background: #F0F0F0;
+				border: 0;
+				border-top: 1px solid #AAA;
+				outline: 0;
+				font-size: 16px;
+				cursor: pointer;
+			}
+			
 			#sel_filter {
 				display: block;
 				position: relative;
@@ -40,7 +52,7 @@ else exit;
 				display: block;
 				position: relative;
 				width: 100%;
-				height: calc(100% - 96px);
+				height: calc(100% - 96px - 32px);
 				background: #DDD;
 				border-top: 1px solid #AAA;
 				border-bottom: 1px solid #AAA;
@@ -134,6 +146,7 @@ else exit;
 					}
 					?>
 				</select>
+				<input id="refresh" type="button" value="Refresh" onclick="update()"/>
 				<div id="list_filters"></div>
 				<input id="b_download" type="button" onclick="document.getElementById('form').submit()" value="Download"/>
 			</form><div id="display" class="section" style="width: calc(100% - 300px); height: 100%;"></div>
