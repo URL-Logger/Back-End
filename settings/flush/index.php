@@ -1,5 +1,7 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
 
+deny_on("F");
+
 # get which table is being flushed
 $mode = "";
 if(isset($_GET['browser'])) $mode = "browser";

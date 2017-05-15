@@ -58,8 +58,6 @@ if(isset($_POST['submit'])) {
 				$permissions = "";
 				foreach($_POST['privilege'] as $privilege)
 					$permissions .= $privilege;
-				if($permissions == "DMuUaAP")
-					$permissions = "*";
 			} else if($is_self)
 				$out = "You may not modify your own privileges.";
 		}
@@ -180,6 +178,7 @@ if(isset($_POST['submit'])) {
 				<b>Privileges</b></br>
 				<input type="hidden" name="privilege[]" value="-"/>
 				<input type="checkbox" name="privilege[]" value="D" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'D') !== FALSE || $permissions == "*" || $_USER == 0) echo " checked"; ?>> Download Collection</br>
+				<input type="checkbox" name="privilege[]" value="F" <?php if(!has_privilege('F') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'F') !== FALSE || $permissions == "*") echo " checked"; ?>> Flush Collection</br>
 				<input type="checkbox" name="privilege[]" value="M" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'M') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit Own Account</br>
 				<input type="checkbox" name="privilege[]" value="u" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'u') !== FALSE || $permissions == "*" || $_USER == 0) echo " checked"; ?>> View User Accounts</br>
 				<input type="checkbox" name="privilege[]" value="U" <?php if(!has_privilege('P') || $is_self || $disabled) echo " disabled"; if(strpos($permissions, 'U') !== FALSE || $permissions == "*") echo " checked"; ?>> Edit User Accounts</br>
