@@ -32,8 +32,6 @@ else if(isset($_POST['submit'])) {
 	</head>
 	<body>
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-		<a href="..">Back</a></br>
-		</br>
 		<b>Flush <?php echo ($mode == "browser")? "Browser" : (($mode == "mobile")? "Mobile" : ""); ?> Data</b></br>
 		</br>
 		This will delete all <?=$mode?> data. You may not reverse this action.</br>

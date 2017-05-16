@@ -105,7 +105,16 @@ function dropdown_toggle(item) {
 		</div><a class="button" onclick="dropdown_toggle('dd_manage')">Manage</a></td>
 		<?php } ?>
 		<td class="spacing"></td>
-		<td><a class="button" href="/settings/">Settings</a></td>
+		<?php if(has_privilege('F')) { ?>
+		<td><a class="button" onclick="dropdown_toggle('dd_flush')">Flush</a><div id="dd_flush" class="dropdown right">
+			<table class="menu">
+				<?php
+				echo "<tr><td><a class=\"button\" href=\"/flush/?browser\">Browser Data</a></td></tr>";
+				echo "<tr><td><a class=\"button\" href=\"/flush/?mobile\">Mobile Data</a></td></tr>";
+				?>
+			</table>
+		</div></td>
+		<?php } ?>
 		<td><a class="button" onclick="dropdown_toggle('dd_account')">Options</a><div id="dd_account" class="dropdown right">
 			<table class="menu">
 				<tr><td><a class="button" href="/account/">My Account</a></td></tr>
