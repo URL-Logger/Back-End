@@ -7,6 +7,7 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/secure.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
 $db = DB::connect($_DB['HOST'], $_DB['READ_COLLECTION']['USER'], $_DB['READ_COLLECTION']['PASS'], $_DB['DATABASE']);
+if(!$db) die("Failed to connect to database. Please try again.</br>");
 
 $preview = isset($_REQUEST['preview']);
 

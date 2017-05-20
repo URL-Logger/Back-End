@@ -2,14 +2,29 @@
 require_once("src/lib/db.php");
 require_once("src/misc/database.php");
 
+file_put_contents("android.log", "");
+foreach($_POST as $key=>$entry) {
+	$length = count($entry);
+	file_put_contents("android.log", "{$key}: {$entry} [{$length}]\n", FILE_APPEND);
+}
+
 # get parameters
-$userid =     (isset($_POST['UserID']))? htmlspecialchars($_POST['UserID'], ENT_QUOTES) : null;
-$appid =      (isset($_POST['AppID']))? htmlspecialchars($_POST['AppID'], ENT_QUOTES) : null;
-$start =      (isset($_POST['StartTime']))? htmlspecialchars($_POST['StartTime'], ENT_QUOTES) : null;
-$end =        (isset($_POST['EndTime']))? htmlspecialchars($_POST['EndTime'], ENT_QUOTES) : null;
-$last =       (isset($_POST['LastTime']))? htmlspecialchars($_POST['LastTime'], ENT_QUOTES) : null;
-$total =      (isset($_POST['TotalTime']))? htmlspecialchars($_POST['TotalTime'], ENT_QUOTES) : null;
-$launch =     (isset($_POST['Launch']))? htmlspecialchars($_POST['Launch'], ENT_QUOTES) : null;
+$userid =     (isset($_POST['UserID']))? $_POST['UserID'] : null;
+$appid =      (isset($_POST['AppID']))? $_POST['AppID'] : null;
+$start =      (isset($_POST['StartTime']))? $_POST['StartTime'] : null;
+$end =        (isset($_POST['EndTime']))? $_POST['EndTime'] : null;
+$last =       (isset($_POST['LastTime']))? $_POST['LastTime'] : null;
+$total =      (isset($_POST['TotalTime']))? $_POST['TotalTime'] : null;
+$launch =     (isset($_POST['Launch']))? $_POST['Launch'] : null;
+
+if($userid !== null) {
+	$db = DB::connect($_DB['HOST'], $_DB['WRITE_USER_INFO']['USER'], $_DB['WRITE_USER_INFO']['PASS'], $_DB['DATABASE']);
+	$db->prepare("postSync", "UPDATE `User_Login` SET LastSync=NOW() WHERE ID=?");
+	$db->param("postSync", "i", is_array($userid)? $userid[0] : $userid);
+	$db->execute("postSync");
+}
+
+// htmlspecialchars( , ENT_QUOTES);
 
 # if all parameters are arrays fo the same size,
 # copy array values into $rows
@@ -20,6 +35,7 @@ if(is_array($userid)
 	&& is_array($end)
 	&& is_array($last)
 	&& is_array($total)
+	&& is_array($launch)
 	&& count($userid) == count($appid)
 	&& count($userid) == count($start)
 	&& count($userid) == count($end)

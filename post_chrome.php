@@ -3,17 +3,25 @@ require_once("src/lib/db.php");
 require_once("src/misc/database.php");
 
 # get parameters
-$userid =    (isset($_POST['UserID']))? htmlspecialchars($_POST['UserID'], ENT_QUOTES) : null;
-$url =       (isset($_POST['URL']))? htmlspecialchars($_POST['URL'], ENT_QUOTES) : null;
-$title =     (isset($_POST['Title']))? htmlspecialchars($_POST['Title'], ENT_QUOTES) : "";
-$timestamp = (isset($_POST['Timestamp']))? htmlspecialchars($_POST['Timestamp'], ENT_QUOTES) : null;
-$urlid =     (isset($_POST['URLID']))? htmlspecialchars($_POST['URLID'], ENT_QUOTES) : null;
-$urlvid =    (isset($_POST['URLVID']))? htmlspecialchars($_POST['URLVID'], ENT_QUOTES) : null;
-$urlrid =    (isset($_POST['URLRID']))? htmlspecialchars($_POST['URLRID'], ENT_QUOTES) : null;
-$trans = 	 (isset($_POST['Transition']))? htmlspecialchars($_POST['Transition'], ENT_QUOTES) : null;
+$userid =    (isset($_POST['UserID']))? $_POST['UserID'] : null;
+$url =       (isset($_POST['URL']))? $_POST['URL'] : null;
+$title =     (isset($_POST['Title']))? $_POST['Title'] : null;
+$timestamp = (isset($_POST['Timestamp']))? $_POST['Timestamp'] : null;
+$urlid =     (isset($_POST['URLID']))? $_POST['URLID'] : null;
+$urlvid =    (isset($_POST['URLVID']))? $_POST['URLVID'] : null;
+$urlrid =    (isset($_POST['URLRID']))? $_POST['URLRID'] : null;
+$trans = 	 (isset($_POST['Transition']))? $_POST['Transition'] : null;
+
+// htmlspecialchars( , ENT_QUOTES);
+
+if($userid !== null) {
+	$db = DB::connect($_DB['HOST'], $_DB['WRITE_USER_INFO']['USER'], $_DB['WRITE_USER_INFO']['PASS'], $_DB['DATABASE']);
+	$db->prepare("postSync", "UPDATE `User_Login` SET LastSync=NOW() WHERE ID=?");
+	$db->param("postSync", "i", is_array($userid)? $userid[0] : $userid);
+	$db->execute("postSync");
+}
 
 $rows = array();
-
 # if all parameters are arrays fo the same size,
 # copy array values into $rows
 if(is_array($userid)
