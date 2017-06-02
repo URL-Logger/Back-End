@@ -4,6 +4,20 @@ require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
 $db = DB::connect($_DB['HOST'], $_DB['ROOT']['USER'], $_DB['ROOT']['PASS'], $_DB['DATABASE']);
 
+$db->query("CREATE TABLE IF NOT EXISTS `Collection_Android_Temp` (
+		ID				INT UNSIGNED NOT NULL AUTO_INCREMENT,
+		UserID			INT UNSIGNED NOT NULL,
+		AppID			VARCHAR(64) NOT NULL,
+		StartTime		TIMESTAMP,
+		EndTime			TIMESTAMP,
+		LastTime		TIMESTAMP,
+		TotalTime		INT UNSIGNED DEFAULT 0,
+		Launch			INT UNSIGNED DEFAULT 0,
+		PRIMARY KEY (ID)
+	);");
+print $db->error();
+/*
+
 # if tags `all or `table_accounts are set, reinstall Admin_Login
 if(isset($_GET['all']) || isset($_GET['table_accounts'])) {
 	$db->query("DROP TABLE IF EXISTS `Admin_Login`;");
@@ -68,7 +82,7 @@ if(isset($_GET['all']) || isset($_GET['table_collection_android'])) {
 		);")) die($db->error());
 	$db->execute("CreateCollectionAndroid");
 }
-
+*/
 # if tags `all or `users are set, reinstall database users
 if(isset($_GET['all']) || isset($_GET['users'])) {
 	foreach($_DB_USERS as $user=>$props) {
@@ -81,8 +95,9 @@ if(isset($_GET['all']) || isset($_GET['users'])) {
 		}
 	}
 }
-
+/*
 # if tags `all or `values are set, insert default values
 if(isset($_GET['all']) || isset($_GET['values'])) {
 	$db->query("INSERT INTO `Admin_Login` (Email, Password) VALUES ('admin', 'admin')");
 }
+*/

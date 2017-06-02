@@ -16,7 +16,7 @@ $trans = 	 (isset($_POST['Transition']))? $_POST['Transition'] : null;
 
 if($userid !== null) {
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_USER_INFO']['USER'], $_DB['WRITE_USER_INFO']['PASS'], $_DB['DATABASE']);
-	$db->prepare("postSync", "UPDATE `User_Login` SET LastSync=NOW() WHERE ID=?");
+	$db->prepare("postSync", "UPDATE `User_Login` SET LastSyncBrowser=NOW() WHERE ID=?");
 	$db->param("postSync", "i", is_array($userid)? $userid[0] : $userid);
 	$db->execute("postSync");
 }
@@ -42,8 +42,8 @@ if(is_array($userid)
 		
 	# add all array entries to $rows
 	for($i=0; $i<count($userid); ++$i)
-		$rows []= array('userid'=>$userid[$i], 'url'=>$url[$i], 'title'=>$title[$i], 'timestamp'=>$timestamp[$i],
-			'urlid'=>$urlid[$i], 'urlvid'=>$urlvid[$i], 'urlrid'=>$urlrid[$i], 'trans'=>$trans[$i]);
+		$rows []= array('userid'=>htmlspecialchars($userid[$i], ENT_QUOTES), 'url'=>htmlspecialchars($url[$i], ENT_QUOTES), 'title'=>htmlspecialchars($title[$i], ENT_QUOTES), 'timestamp'=>htmlspecialchars($timestamp[$i], ENT_QUOTES),
+			'urlid'=>htmlspecialchars($urlid[$i], ENT_QUOTES), 'urlvid'=>htmlspecialchars($urlvid[$i], ENT_QUOTES), 'urlrid'=>htmlspecialchars($urlrid[$i], ENT_QUOTES), 'trans'=>htmlspecialchars($trans[$i], ENT_QUOTES));
 }
 # if only a single record is sent, add that record to $rows
 else if(!is_array($userid)

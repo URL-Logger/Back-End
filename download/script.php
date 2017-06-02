@@ -24,7 +24,7 @@ function tileDate(id) {
 	return `<div class='item' id='filter_`+id+`'><input type='hidden' name='date[]' value='`+id+`'/>
 		<div class='title'>Date</div>
 		<div class='content'>
-			<input type='date' name='date_`+id+`' value='<?php echo date("Y-m-d"); ?>' onkeyup='update()'/></br>
+			<input type='date' name='date_`+id+`' value='<?php echo date("Y-m-d"); ?>' onchange='update()'/></br>
 		</div>
 		<a class='exit' onclick="removeFilter('filter_`+id+`')">x</a>
 	</div>
@@ -35,8 +35,8 @@ function tileDateRange(id) {
 	return `<div class='item' id='filter_`+id+`'><input type='hidden' name='daterange[]' value='`+id+`'/>
 		<div class='title'>Date Range</div>
 		<div class='content'>
-			Start <input type='date' name='daterange_start_`+id+`' value='<?php echo date("Y-m-d"); ?>' onkeyup='update()'/></br>
-			End <input type='date' name='daterange_end_`+id+`' value='<?php echo date("Y-m-d"); ?>' onkeyup='update()'/></br>
+			Start <input type='date' name='daterange_start_`+id+`' value='<?php echo date("Y-m-d"); ?>' onchange='update()'/></br>
+			End <input type='date' name='daterange_end_`+id+`' value='<?php echo date("Y-m-d"); ?>' onchange='update()'/></br>
 		</div>
 		<a class='exit' onclick="removeFilter('filter_`+id+`')">x</a>
 	</div>

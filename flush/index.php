@@ -29,6 +29,11 @@ else if(isset($_POST['submit'])) {
 <html>
 	<head>
 		<title>Utelem - Flush Data</title>
+		<style><?php include_once("../src/styles/layout.php"); ?>
+		body {
+			background: <?=$C_PRIMARY?>;
+		}
+		</style>
 	</head>
 	<body>
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>

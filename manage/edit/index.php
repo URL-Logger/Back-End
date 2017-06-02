@@ -156,6 +156,11 @@ if(isset($_POST['submit'])) {
 <html>
 	<head>
 		<title>Utelem - <?php echo ($_USER == 0)? "Add" : (($is_self)? "My" : "Edit"); ?> Account</title>
+		<style><?php include_once("{$_SERVER['DOCUMENT_ROOT']}/src/styles/layout.php"); ?>
+		body {
+			background: <?=$C_PRIMARY?>;
+		}
+		</style>
 	</head>
 	<body>
 		<a href='..'/>Back</a></br>

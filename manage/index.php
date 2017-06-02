@@ -37,7 +37,11 @@ else {
 <html>
 	<head>
 		<title>Utelem - Administrators</title>
-		<style>
+		<style><?php include_once("../src/styles/layout.php"); ?>
+		body {
+			background: <?=$C_PRIMARY?>;
+		}
+		
 		table tr.header td {
 			font-weight: bold;
 		}

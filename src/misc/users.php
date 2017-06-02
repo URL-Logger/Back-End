@@ -41,7 +41,8 @@ $_DB_USERS = array(
 		'Password'=>"Cj9nbCIsjbZUqyzkcafbcIht",
 		'Access'=>array(
 			'Collection_Chrome'=>"SELECT",
-			'Collection_Android'=>"SELECT"
+			'Collection_Android'=>"SELECT",
+			'Collection_Android_Temp'=>"SELECT"
 		)
 	),
 	"w_collection"=> array(
@@ -50,7 +51,8 @@ $_DB_USERS = array(
 		'Password'=>"BOvB5qrMm5rp72JSeNgGAIkw",
 		'Access'=>array(
 			'Collection_Chrome'=>"INSERT",
-			'Collection_Android'=>"INSERT"
+			'Collection_Android'=>"INSERT",
+			'Collection_Android_Temp'=>"INSERT"
 		)
 	),
 	"r_a_login"=> array(

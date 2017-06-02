@@ -14,14 +14,46 @@ else exit;
 	<head>
 		<title>Utelem - Download</title>
 		<style>
-			<?php include("src/styles/layout.php"); ?>
+			<?php include_once("../src/styles/layout.php"); ?>
+			form {
+				margin: 0;
+			}
+
+			#header {
+				display: block;
+				position: relative;
+				width: 100%;
+				height: 0px;
+				background: #FFF;
+				border-bottom: 1px solid #888;
+			}
+
+			#maincontent {
+				display: block;
+				position: relative;
+				width: 100%;
+				height: calc(100% - 2em - 2px);
+				border-left: 1px solid #000;
+				border-right: 1px solid #000;
+				padding: 0;
+				margin: 0 auto;
+			}
+
+			.section {
+				display: inline-block;
+				position: relative;
+				height: 100%;
+				vertical-align: top;
+			}
+			
 			#refresh {
 				width: 100%;
 				height: 32px;
 				line-height: 32px;
-				background: #F0F0F0;
+				background: <?=$C_SECONDARY?>;
 				border: 0;
-				border-top: 1px solid #AAA;
+				border-top: 1px solid <?=$C_BORDER?>;
+				color: <?=$C_PRIMARY?>;
 				outline: 0;
 				font-size: 16px;
 				cursor: pointer;
@@ -31,11 +63,10 @@ else exit;
 				display: block;
 				position: relative;
 				width: 100%;
-				height: 48px;
-				background: #FFF;
+				height: 42px;
+				background: <?=$C_PRIMARY?>;
 				border: 0;
 				outline: 0;
-				font-family: "Yu Gothic UI";
 				font-size: 18px;
 				text-align: center;
 			} #sel_filter option {
@@ -43,6 +74,8 @@ else exit;
 				position: relative;
 				width: 100%;
 				height: 32px;
+				background: <?=$C_PRIMARY?>;
+				border: <?=$C_BORDER?>;
 				font-family: inherit;
 				font-size: inherit;
 				text-align: center;
@@ -52,23 +85,23 @@ else exit;
 				display: block;
 				position: relative;
 				width: 100%;
-				height: calc(100% - 96px - 32px);
-				background: #DDD;
-				border-top: 1px solid #AAA;
-				border-bottom: 1px solid #AAA;
+				height: calc(100% - 96px - 30px);
+				background: <?=$C_TERNARY?>;
+				border-top: 1px solid <?=$C_BORDER?>;
+				border-bottom: 1px solid <?=$C_BORDER?>;
 				overflow-y: scroll;
 			}
-			
 			#list_filters .item {
 				display: block;
 				position: relative;
 				width: 100%;
 				height: auto;
-				border-bottom: 1px solid #888;
-				padding: 2px 4px 2px 4px;
-				font-family: "Yu Gothic UI";
-				
-			}	#list_filters .item .exit {
+				background: <?=$C_PRIMARY?>;
+				border-bottom: 1px solid <?=$C_BORDER?>;
+				padding: 2px 4px 6px 4px;
+				font-size: 15px;
+				line-height: 28px;
+			} #list_filters .item .exit {
 				display: block;
 				position: absolute;
 				top: 0px;
@@ -77,10 +110,13 @@ else exit;
 				height: 20px;
 				border: 0;
 				outline: 0;
+				color: #D22;
 				line-height: 20px;
-				font-size: 16px;
+				font-size: 18px;
 				text-align: center;
 				cursor: pointer;
+			} #list_filters .item input {
+				width: 100%;
 			}
 			
 			#display {
@@ -92,14 +128,15 @@ else exit;
 				position: relative;
 				width: 100%;
 				height: 48px;
-				background: #EEE;
+				background: <?=$C_SECONDARY?>;
 				border: 0;
+				border-bottom: 1px solid <?=$C_BORDER?>;
 				outline: 0;
+				color: <?=$C_PRIMARY?>;
 				padding: 0;
 				margin: 0;
 				line-height: 48px;
-				font-family: "Yu Gothic UI";
-				font-size: 18px;
+				font-size: 16px;
 				text-align: center;
 				cursor: pointer;
 			}
@@ -112,7 +149,10 @@ else exit;
 			}
 			table.preview td {
 				max-width: 250px;
-				border-bottom: 1px solid #CCC;
+				border-left: 1px solid #E0E0E0;
+				border-right: 1px solid #E0E0E0;
+				border-bottom: 1px solid <?=$C_TERNARY?>;
+				font-size: 14px;
 				padding: 4px 8px 4px 8px;
 				white-space: pre;
 				overflow: auto;
@@ -124,15 +164,15 @@ else exit;
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 		<script>
 			var mode = "<?=$dataset?>";
-			<?php include("src/scripts/download.php"); ?>
+			<?php include("script.php"); ?>
 		</script>
 	</head>
 	<body onload="update()">
 		<div id="maincontent">
-			<form id="form" class="section" method='POST' action='download.php' target='_blank' style="width: 300px; height: 100%; border-right: 1px solid #888;">
+			<form id="form" class="section" method='POST' action='download.php' target='_blank' style="width: 300px; height: 100%; border-right: 1px solid <?=$C_BORDER?>;">
 				<input type="hidden" name="<?=$dataset?>"/>
 				<select id="sel_filter" onchange="addFilter()">
-					<option>- Select Filter -</option>
+					<option>Select Filter</option>
 					<option>Limit Rows</option>
 					<option>Date</option>
 					<option>Date Range</option>

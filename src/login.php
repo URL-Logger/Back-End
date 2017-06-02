@@ -37,13 +37,7 @@ if(isset($_POST['login'])) {
 	<head>
 		<title>Utelem - Login</title>
 		<style>
-			* {
-				box-sizing: border-box;
-			}
-			
-			body {
-				background: #000;
-			}
+			<?php include_once("{$_SERVER['DOCUMENT_ROOT']}/src/styles/layout.php"); ?>
 		
 			#popup {
 				display: block;
@@ -53,7 +47,8 @@ if(isset($_POST['login'])) {
 				right: 0px;
 				width: 400px;
 				height: 250px;
-				background: #F4F3E5;
+				background: <?=$C_PRIMARY?>;
+				border: 1px solid #000;
 				border-radius: 18px;
 				margin: 0 auto;
 				overflow: hidden;
@@ -64,8 +59,8 @@ if(isset($_POST['login'])) {
 				width: 100%;
 				height: 48px;
 				background: #3B65AF;
-				color: #F4F3E5;
 				border-bottom: 1px solid #000;
+				color: <?=$C_PRIMARY?>;
 				padding: 0px 24px 0px 18px;
 				line-height: 48px;
 				font-family: "Yu Gothic UI";
@@ -95,10 +90,11 @@ if(isset($_POST['login'])) {
 				width: 80%;
 				height: 36px;
 				background: #F4F4F4;
+				box-shadow: inset 1px 0px 2px #929596;
 				border: 1px solid #929596;
 				border-radius: 4px;
-				box-shadow: inset 1px 0px 2px #929596;
 				outline: 0;
+				color: #000;
 				padding: 0px 6px 2px 6px;
 				margin-left: 10%;
 				margin-bottom: 6px;
@@ -113,7 +109,7 @@ if(isset($_POST['login'])) {
 				display: block;
 				width: 80%;
 				height: 42px;
-				background: #F4F3E5;
+				background: <?=$C_PRIMARY?>;
 				border: 1px solid #929596;
 				border-radius: 4px;
 				outline: 0;
@@ -122,20 +118,6 @@ if(isset($_POST['login'])) {
 				font-family: "Yu Gothic UI";
 				font-size: 18px;
 				text-align: center;
-			}
-			
-			.logo {
-				display: inline-block;
-				position: relative;
-				width: auto;
-				height: auto;
-				background-image: url('/src/images/Utelem-graphic-icon-blue-bk 2.png');
-				background-position: center;
-				background-size: contain;
-				background-repeat: no-repeat;
-				border: 0;
-				border-radius: 4px;
-				vertical-align: top;
 			}
 		</style>
 		<script></script>

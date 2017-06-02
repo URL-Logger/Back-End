@@ -33,7 +33,11 @@ else if(isset($_POST['cancel'])) {
 <html>
 	<head>
 		<title>Utelem - Remove Account</title>
-		<style>
+		<style><?php include_once("{$_SERVER['DOCUMENT_ROOT']}/src/styles/layout.php"); ?>
+		body {
+			background: <?=$C_PRIMARY?>;
+		}
+		
 		table tr.header td {
 			font-weight: bold;
 		}
