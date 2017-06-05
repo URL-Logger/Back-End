@@ -14,14 +14,20 @@ if(!$result || isset($_POST['cancel'])) {
 }
 
 if(isset($_POST['delete'])) {
+	if($result[0]['RespondentID']) {
+		$DBU = $_DB['ROOT'];
+		$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
+		$db->prepare("deleteInfo", "DELETE FROM `respondents` WHERE respondent_id=? LIMIT 1");
+		$db->param("deleteInfo", "i", $result[0]['RespondentID']);
+		$db->execute("deleteInfo");
+	}
+	
 	$DBU = $_DB['DELETE_USER'];
 	$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
 	$db->prepare("deleteLogin", "DELETE FROM `User_Login` WHERE ID=? LIMIT 1");
-	$db->prepare("deleteInfo", "DELETE FROM `User_Info` WHERE ID=? LIMIT 1");
 	$db->param("deleteLogin", "i", $_USER);
-	$db->param("deleteInfo", "i", $_USER);
 	$db->execute("deleteLogin");
-	$db->execute("deleteInfo");
+	
 	header("Location: ..");
 	exit;
 }
@@ -30,6 +36,7 @@ if(isset($_POST['delete'])) {
 <html>
 	<head>
 		<title>Utelem - Remove Account</title>
+		<link rel="icon" href="<?=$_CONFIG['FAVICON']?>" type="image/x-icon"/>
 		<style><?php include_once("../../src/styles/layout.php"); ?>
 		body {
 			background: <?=$C_PRIMARY?>;

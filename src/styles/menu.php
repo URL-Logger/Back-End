@@ -1,5 +1,5 @@
 <?php /* Menu Container */ ?>
-.menu {
+.menu_main {
 	position: relative;
 	width: 100%;
 	z-index: 100;
@@ -9,26 +9,26 @@
 }
 
 <?php /* Element Container */ ?>
-.menu td {
+.menu_main td {
 	position: relative;
 	min-width: 100px;
 	height: auto;
 	border: 1px solid #000;
 	padding: 0;
-} .menu td.spacing {
+} .menu_main td.spacing {
 	width: 100%;
 }
 
 <?php /* Menu Element */ ?>
-.menu .button {
+.menu_main .button {
 	display: inline-block;
 	position: relative;
 	width: 100%;
 	height: 32px;
 	background: #3B65AF;
 	color: #F4F3E5;
-	font-size: 15px;
-}	.menu a.button {
+	font-size: 14px;
+}	.menu_main a.button {
 	display: block;
 	position: relative;
 	width: 100%;
@@ -37,20 +37,20 @@
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
-}	.menu .dropdown .button {
+}	.menu_main .dropdown .button {
 	padding-left: 6px;
 	text-align: left;
 }
 
 <?php /* Dropdown Container */ ?>
-.menu .dropdown {
+.menu_main .dropdown {
 	display: none;
 	position: absolute;
 	top: 32px;
 	width: 150px;
 	height: auto;
-} .menu .dropdown.left {
+} .menu_main .dropdown.left {
 	left: -1px;
-} .menu .dropdown.right {
+} .menu_main .dropdown.right {
 	right: -1px;
 }

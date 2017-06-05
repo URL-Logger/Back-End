@@ -43,37 +43,7 @@ if(isset($_POST['submit'])) {
 	if($email !== "") {
 		if($_USER > 0) {
 			if($newpass && $newpass == $conpass) {
-				/*
-				# Create salt and hash password
-				$salt = random_bytes(24);
-				$password = password_hash($newpass.$salt, PASSWORD_BCRYPT);
-				
-				# Delete old salt
-				$DBU = $_DB['DELETE_SECURITY_LOGIN'];
-				$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-				$db->prepare("clearSalt", "DELETE FROM `Security_Salt` WHERE ID=?");
-				$db->param("clearSalt", "i", $saltID);
-				$db->execute("clearSalt");
-				
-				# Write new salt to database
-				$DBU = $_DB['WRITE_SECURITY_LOGIN'];
-				$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-				$db->prepare("addSalt", "INSERT INTO `Security_Salt` (Salt) VALUES (?)");
-				$db->param("addSalt", "s", $salt);
-				$db->execute("addSalt");
-				$saltID = $db->id();
-				$db->close();
-				
-				# Update user's password and salt
-				$DBU = $_DB['WRITE_ADMIN_INFO'];
-				$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-				$db->prepare("setUserPassword", "UPDATE `Admin_Login` SET Password=?, Secure=? WHERE ID=?");
-				$db->param("setUserPassword", "s", $password);
-				$db->param("setUserPassword", "s", $saltID);
-				$db->param("setUserPassword", "i", $_USER);
-				$db->execute("setUserPassword");
-				$db->close();
-				*/
+				$newpass = password_hash($newpass, PASSWORD_BCRYPT);
 
 				$DBU = $_DB['WRITE_USER_INFO'];
 				$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
@@ -82,6 +52,17 @@ if(isset($_POST['submit'])) {
 				$db->param("setUserPassword", "i", $_USER);
 				$db->execute("setUserPassword");
 				$db->close();
+				
+				if($result[0]['RespondentID']) {
+					$DBU = $_DB['ROOT'];
+					$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
+					$db->prepare("setRespondentPassword", "UPDATE `respondents` SET password=? WHERE respondent_id=?");
+					$db->param("setRespondentPassword", "s", $newpass);
+					$db->param("setRespondentPassword", "s", $result[0]['RespondentID']);
+					$db->execute("setRespondentPassword");
+					$id = $db->id();
+					$db->close();
+				}
 			}
 			
 			# Update user's information
@@ -92,26 +73,23 @@ if(isset($_POST['submit'])) {
 			$db->param("setUser", "i", $_USER);
 			$db->execute("setUser");
 			$db->close();
+			
+			if($result[0]['RespondentID']) {
+				$DBU = $_DB['ROOT'];
+				$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
+				$db->prepare("setRespondent", "UPDATE `respondents` SET email_address=? WHERE respondent_id=?");
+				$db->param("setRespondent", "s", $email);
+				$db->param("setRespondent", "s", $result[0]['RespondentID']);
+				$db->execute("setRespondent");
+				$id = $db->id();
+				$db->close();
+			}
+			
 			header("Location:?id={$_USER}&Success");
 			exit;
 		}
 		else if($newpass && $newpass == $conpass) {
-			/*
-			# Create salt and hash password
-			$salt = random_bytes(24);
-			$password = password_hash($newpass.$salt, PASSWORD_BCRYPT);
-			
-			# Write new salt to database
-			$DBU = $_DB['WRITE_SECURITY_LOGIN'];
-			$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-			$db->prepare("clearSalt", "DELETE FROM `Security_Salt` WHERE ID=?");
-			$db->prepare("addSalt", "INSERT INTO `Security_Salt` (Salt) VALUES (?)");
-			$db->param("clearSalt", "i", $saltID);
-			$db->execute("clearSalt");
-			$db->param("addSalt", "s", $salt);
-			$db->execute("addSalt");
-			$saltID = $db->id();
-			*/
+			$newpass = password_hash($newpass, PASSWORD_BCRYPT);
 			
 			# Create new user
 			$DBU = $_DB['WRITE_USER_INFO'];
@@ -122,7 +100,7 @@ if(isset($_POST['submit'])) {
 			$db->execute("addUser");
 			$id = $db->id();
 			$db->close();
-			header("Location:../edit/?id={$id}&Created");
+			header("Location:?id={$id}&Created");
 			exit;
 		}
 		else $errors []= "UnmatchedPasswords";
@@ -134,6 +112,7 @@ if(isset($_POST['submit'])) {
 <html>
 	<head>
 		<title>Utelem - <?php echo ($_USER == 0)? "Add" : "Edit"; ?> Account</title>
+		<link rel="icon" href="<?=$_CONFIG['FAVICON']?>" type="image/x-icon"/>
 		<style><?php include_once("../../src/styles/layout.php"); ?>
 		body {
 			background: <?=$C_PRIMARY?>;
@@ -141,30 +120,35 @@ if(isset($_POST['submit'])) {
 		</style>
 	</head>
 	<body>
-		<a href='..'/>Back</a></br>
-		<?php
-		if(isset($_GET['Success']))
-			echo "Account has been updated.</br>";
-		else if(isset($_GET['Created']))
-			echo "Account has been created.</br>";
-		else if(count($errors) > 0) {
-			# Display errors
-			if(in_array("EmailRequired", $errors))
-				echo "An email is required.";
-			if(in_array("UnmatchedPasswords", $errors))
-				echo "Passwords do not match.";
-		}
-		else
-			echo "</br>";
-		?>
 		<div id="maincontent">
+			<div class="menu">
+				<a class="button" href="..">Back</a>
+				<div class="spacer"></div>
+			</div>
+			<?php
+			if(isset($_GET['Success']))
+				$out = "Account has been updated.</br>";
+			else if(isset($_GET['Created']))
+				$out = "Account has been created.</br>";
+			else if(count($errors) > 0) {
+				# Display errors
+				if(in_array("EmailRequired", $errors))
+					$out = "An email is required.";
+				if(in_array("UnmatchedPasswords", $errors))
+					$out = "Passwords do not match.";
+			}
+			echo isset($out)? $out : "</br>";
+			?>
+			
 			<form method="POST">
-				<input type="text" placeholder="Email" name="email" value="<?=$email?>"/><br>
-				<br>
-				<input type="password" name="newPassword" placeholder="New Password"/><br>
-				<input type="password" name="confirmPassword" placeholder="Confirm Password"/><br>
-				<br>
-				<input type="submit" name="submit" value="<?php echo ($_USER > 0)? "Save" : "Create"; ?>"/></br
+				<table class="fieldset">
+					<tr> <th>Email</th> <td><input type="text" placeholder="Email" name="email" value="<?=$email?>"/></td> </tr>
+					<tr class="spacer"></tr>
+					<tr> <th>Password</th> <td><input type="password" name="newPassword" placeholder="New Password"/></td> </tr>
+					<tr> <th>Confirm</th> <td><input type="password" name="confirmPassword" placeholder="Confirm Password"/></td> </tr>
+					<tr class="spacer"></tr>
+					<tr> <td></td> <td><input type="submit" name="submit" value="<?php echo ($_USER > 0)? "Save" : "Create"; ?>"/></td> </tr>
+				</table>
 			</form>
 		</div>
 	</body>

@@ -29,6 +29,7 @@ else if(isset($_POST['submit'])) {
 <html>
 	<head>
 		<title>Utelem - Flush Data</title>
+		<link rel="icon" href="<?=$_CONFIG['FAVICON']?>" type="image/x-icon"/>
 		<style><?php include_once("../src/styles/layout.php"); ?>
 		body {
 			background: <?=$C_PRIMARY?>;

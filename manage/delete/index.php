@@ -33,6 +33,7 @@ else if(isset($_POST['cancel'])) {
 <html>
 	<head>
 		<title>Utelem - Remove Account</title>
+		<link rel="icon" href="<?=$_CONFIG['FAVICON']?>" type="image/x-icon"/>
 		<style><?php include_once("{$_SERVER['DOCUMENT_ROOT']}/src/styles/layout.php"); ?>
 		body {
 			background: <?=$C_PRIMARY?>;

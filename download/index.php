@@ -1,6 +1,4 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php");
-
 deny_on('D');
 
 if(isset($_GET['browser']))
@@ -13,6 +11,7 @@ else exit;
 <html>
 	<head>
 		<title>Utelem - Download</title>
+		<link rel="icon" href="<?=$_CONFIG['FAVICON']?>" type="image/x-icon"/>
 		<style>
 			<?php include_once("../src/styles/layout.php"); ?>
 			form {
@@ -168,6 +167,7 @@ else exit;
 		</script>
 	</head>
 	<body onload="update()">
+		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
 		<div id="maincontent">
 			<form id="form" class="section" method='POST' action='download.php' target='_blank' style="width: 300px; height: 100%; border-right: 1px solid <?=$C_BORDER?>;">
 				<input type="hidden" name="<?=$dataset?>"/>

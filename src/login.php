@@ -4,31 +4,16 @@ if(isset($_POST['login'])) {
 	$user = (!empty($_POST['user']))? $_POST['user'] : "";
 	$pass = (!empty($_POST['pass']))? $_POST['pass'] : "";
 	$db = DB::connect($_DB['HOST'], $_DB['READ_ADMIN_LOGIN']['USER'], $_DB['READ_ADMIN_LOGIN']['PASS'], $_DB['DATABASE']);
-	if(!$db->prepare("GetUserLogin", "SELECT ID, Email, Password, Secure FROM `Admin_Login` WHERE Email=? LIMIT 1"))
+	if(!$db->prepare("GetUserLogin", "SELECT ID, Email, Password FROM `Admin_Login` WHERE Email=? LIMIT 1"))
 		die($db->error());
 	$db->param("GetUserLogin", "s", $user);
 	$result = $db->execute("GetUserLogin");
 	if($result !== null) {
-		if($result[0]['Secure'] !== null) {
-			$dbs = DB::connect($_DB['HOST'], $_DB['READ_SECURITY_LOGIN']['USER'], $_DB['READ_SECURITY_LOGIN']['PASS'], $_DB['DATABASE']);
-			$dbs->prepare("getSalt", "SELECT Salt FROM `Security_Salt` WHERE ID=?");
-			$dbs->param("getSalt", "i", $result[0]['Secure']);
-			$res_salt = $dbs->execute("getSalt");
-			if($res_salt) {
-				if(password_verify($pass. $res_salt[0]['Salt'], $result[0]['Password'])) {
-					$_SESSION['ADMIN_USER'] = $result[0]['ID'];
-					header("Refresh: 0");
-					exit;
-				} else $out = "Invalid login credentials.";
-			} else $out = "An internal error has occurred.";
-		}
-		else {
-			if($pass == $result[0]['Password']) {
-				$_SESSION['ADMIN_USER'] = $result[0]['ID'];
-				header("Refresh: 0");
-				exit;
-			} else $out = "Invalid login credentials.";
-		}
+		if(password_verify($pass, $result[0]['Password'])) {
+			$_SESSION['ADMIN_USER'] = $result[0]['ID'];
+			header("Refresh: 0");
+			exit;
+		} else $out = "Invalid login credentials.";
 	} else $out = "Invalid login credentials.";
 }
 ?>
@@ -38,6 +23,11 @@ if(isset($_POST['login'])) {
 		<title>Utelem - Login</title>
 		<style>
 			<?php include_once("{$_SERVER['DOCUMENT_ROOT']}/src/styles/layout.php"); ?>
+			
+			body {
+				background-image: url('/src/images/landingpage1.jpg');
+				background-size: cover;
+			}
 		
 			#popup {
 				display: block;
@@ -48,8 +38,9 @@ if(isset($_POST['login'])) {
 				width: 400px;
 				height: 250px;
 				background: <?=$C_PRIMARY?>;
-				border: 1px solid #000;
+				border: 4px solid #000;
 				border-radius: 18px;
+				box-shadow: 2px 2px 6px <?=$C_BORDER?>;
 				margin: 0 auto;
 				overflow: hidden;
 			}

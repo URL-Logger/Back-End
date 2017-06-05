@@ -14,12 +14,12 @@ function dropdown_toggle(item) {
 }
 </script>
 
-<table class="menu header">
+<table class="menu_main" class="header">
 	<tr>
 		<td><a class="button" href="/">Home</a></td>
 		<?php if(has_privilege('D')) { ?>
 		<td><div id="dd_download" class="dropdown left">
-			<table class="menu">
+			<table class="menu_main">
 				<tr><td><a class="button" href="/download/?browser">Browser Data</a></td></tr>
 				<tr><td><a class="button" href="/download/?mobile">Mobile Data</a></td></tr>
 			</table>
@@ -27,7 +27,7 @@ function dropdown_toggle(item) {
 		<?php } ?>
 		<?php if(has_privilege('u') || has_privilege('a')) { ?>
 		<td><div id="dd_manage" class="dropdown left">
-			<table class="menu">
+			<table class="menu_main">
 				<?php
 				if(has_privilege('u')) echo "<tr><td><a class=\"button\" href=\"/users/\">User Accounts</a></td></tr>";
 				if(has_privilege('a')) echo "<tr><td><a class=\"button\" href=\"/manage/\">Admin Accounts</a></td></tr>";
@@ -38,7 +38,7 @@ function dropdown_toggle(item) {
 		<td class="spacing"></td>
 		<?php if(has_privilege('F')) { ?>
 		<td><a class="button" onclick="dropdown_toggle('dd_flush')">Flush</a><div id="dd_flush" class="dropdown right">
-			<table class="menu">
+			<table class="menu_main">
 				<?php
 				echo "<tr><td><a class=\"button\" href=\"/flush/?browser\">Browser Data</a></td></tr>";
 				echo "<tr><td><a class=\"button\" href=\"/flush/?mobile\">Mobile Data</a></td></tr>";
@@ -47,7 +47,7 @@ function dropdown_toggle(item) {
 		</div></td>
 		<?php } ?>
 		<td><a class="button" onclick="dropdown_toggle('dd_account')">Options</a><div id="dd_account" class="dropdown right">
-			<table class="menu">
+			<table class="menu_main">
 				<tr><td><a class="button" href="/account/">My Account</a></td></tr>
 				<tr><td><a class="button" href="?logout">Logout</a></td></tr>
 			</table>

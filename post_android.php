@@ -2,13 +2,17 @@
 require_once("src/lib/db.php");
 require_once("src/misc/database.php");
 
+file_put_contents("android.log", "");
+foreach($_POST as $key=>$item) {
+	file_put_contents("android.log", "{$key}: ". count($_POST[$key]). "\n", FILE_APPEND);
+}
+
 # get parameters
 $userid =     (isset($_POST['UserID']))? $_POST['UserID'] : 0;
 $appid =      (isset($_POST['AppID']))? $_POST['AppID'] : "";
-$appname =      (isset($_POST['AppName']))? $_POST['AppName'] : "";
+$appname =    (isset($_POST['AppName']))? $_POST['AppName'] : "";
 $start =      (isset($_POST['StartTime']))? $_POST['StartTime'] : 0;
 $end =        (isset($_POST['EndTime']))? $_POST['EndTime'] : 0;
-$last =       (isset($_POST['LastTime']))? $_POST['LastTime'] : 0;
 $total =      (isset($_POST['TotalTime']))? $_POST['TotalTime'] : 0;
 $launch =     (isset($_POST['Launch']))? $_POST['Launch'] : 0;
 
@@ -27,28 +31,25 @@ if(is_array($userid)
 	&& is_array($appname)
 	&& is_array($start)
 	&& is_array($end)
-	&& is_array($last)
 	&& is_array($total)
 	&& is_array($launch)
 	&& count($userid) == count($appid)
 	&& count($userid) == count($appname)
 	&& count($userid) == count($start)
 	&& count($userid) == count($end)
-	&& count($userid) == count($last)
 	&& count($userid) == count($total)
 	&& count($userid) == count($launch)	) {
 		
 	# add all array entries to $rows
 	for($i=0; $i<count($userid); ++$i) {
 		$rows []= array(
-			'userid'=>htmlspecialchars($userid, ENT_QUOTES),
-			'appid'=>htmlspecialchars($appid, ENT_QUOTES),
-			'appname'=>htmlspecialchars($appname, ENT_QUOTES),
-			'start'=>htmlspecialchars($start, ENT_QUOTES),
-			'end'=>htmlspecialchars($end, ENT_QUOTES),
-			'last'=>htmlspecialchars($last, ENT_QUOTES),
-			'total'=>htmlspecialchars($total, ENT_QUOTES),
-			'launch'=>htmlspecialchars($launch, ENT_QUOTES)
+			'userid'=>htmlspecialchars($userid[$i], ENT_QUOTES),
+			'appid'=>htmlspecialchars($appid[$i], ENT_QUOTES),
+			'appname'=>htmlspecialchars($appname[$i], ENT_QUOTES),
+			'start'=>htmlspecialchars($start[$i], ENT_QUOTES),
+			'end'=>htmlspecialchars($end[$i], ENT_QUOTES),
+			'total'=>htmlspecialchars($total[$i], ENT_QUOTES),
+			'launch'=>htmlspecialchars($launch[$i], ENT_QUOTES)
 		);
 	}
 }
@@ -58,7 +59,6 @@ else if(!is_array($userid)
 	&& !is_array($appname)
 	&& !is_array($start)
 	&& !is_array($end)
-	&& !is_array($last)
 	&& !is_array($total)
 	&& !is_array($launch)) {
 		
@@ -69,7 +69,6 @@ else if(!is_array($userid)
 		'appname'=>htmlspecialchars($appname, ENT_QUOTES),
 		'start'=>htmlspecialchars($start, ENT_QUOTES),
 		'end'=>htmlspecialchars($end, ENT_QUOTES),
-		'last'=>htmlspecialchars($last, ENT_QUOTES),
 		'total'=>htmlspecialchars($total, ENT_QUOTES),
 		'launch'=>htmlspecialchars($launch, ENT_QUOTES)
 	);
@@ -86,30 +85,37 @@ if(count($rows) > 0) {
 	# create value placeholders for INSERT query
 	$query = "";
 	for($i=0; $i<count($rows); ++$i) {
-		$query .= "(?,?,?,?,?,?,?,?)";
+		$query .= "(?,?,?,?,?,?,?)";
 		if($i<count($rows)-1)
 			$query .= ", ";
 	}
 	
 	# prepare database query to insert values
 	if(!$db->prepare("postData", "INSERT INTO `Collection_Android` (
-		UserID, AppID, AppName, StartTime, EndTime, LastTime, TotalTime, Launch)
+		UserID, AppID, AppName, StartTime, EndTime, TotalTime, Launch)
 		VALUES {$query}")) die($db->error());
 		
 	# pass values to query
 	foreach($rows as $row) {
+		file_put_contents("error.log", "{$row['userid']} {$row['appid']} {$row['appname']} {$row['start']} {$row['end']} {$row['total']} {$row['launch']}". "\n", FILE_APPEND);
+		
 		$db->param("postData", "i", $row['userid']);
 		$db->param("postData", "s", $row['appid']);
 		$db->param("postData", "s", $row['appname']);
 		$db->param("postData", "s", $row['start']);
 		$db->param("postData", "s", $row['end']);
-		$db->param("postData", "s", $row['last']);
 		$db->param("postData", "s", $row['total']);
 		$db->param("postData", "s", $row['launch']);
 	}
 	
 	# exeucte database query and write status
-	echo ($db->execute("postData") !== false)? 1 : 0;
+	if($db->execute("postData") !== false) {
+		echo count($rows);
+	}
+	else {
+		echo 0;
+		file_put_contents("error.log", $db->error(). "\n", FILE_APPEND);
+	}
 }
 
 # if input is empty and DEBUG is set, write failed status

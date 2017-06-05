@@ -37,6 +37,7 @@ else {
 <html>
 	<head>
 		<title>Utelem - Administrators</title>
+		<link rel="icon" href="<?=$_CONFIG['FAVICON']?>" type="image/x-icon"/>
 		<style><?php include_once("../src/styles/layout.php"); ?>
 		body {
 			background: <?=$C_PRIMARY?>;
@@ -55,27 +56,34 @@ else {
 	</head>
 	<body>
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-		<a href="add/">Create Administrator</a></br>
-		<form method="GET"><input type="text" name="q" placeholder="Search" value="<?php echo $search; ?>" /><input type="submit" value="Go"/></form>
-		<table>
-			<tr class="header">
-				<td>Account</td>
-				<td>Name</td>
-				<td></td>
-				<td></td>
-			</tr>
-			<?php
-			if($result) {
-				foreach($result as $entry) {
-					echo "<tr>
-						<td>{$entry['Email']}</td>
-						<td>{$entry['Name']}</td>
-						<td><a href=\"edit/?id={$entry['ID']}\">Edit</a></td>
-						<td><a href=\"delete/?id={$entry['ID']}\">Delete</a></td>
-					</tr>";
+		<div id="maincontent">
+			<div class="menu">
+				<a class="button" href="add/">New</a>
+				<div class="spacer"></div>
+			</div>
+			</br>
+			<table>
+				<tr class="header">
+					<td>Account</td>
+					<td>Name</td>
+					<td></td>
+					<td></td>
+				</tr>
+				<?php
+				if($result) {
+					foreach($result as $entry) {
+						echo "<tr>
+							<td>{$entry['Email']}</td>
+							<td>{$entry['Name']}</td>
+							<td style=\"text-align: right;\">
+							<a href=\"edit/?id={$entry['ID']}\">Edit</a>";
+						if($entry['ID'] != 1)
+							echo " | <a href=\"delete/?id={$entry['ID']}\">Delete</a>";
+						echo "</td></tr>";
+					}
 				}
-			}
-			?>
-		</table>
+				?>
+			</table>
+		</div>
 	</body>
 </html>

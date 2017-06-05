@@ -2,6 +2,7 @@
 ob_start();
 session_start();
 
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/config.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/user.php");
