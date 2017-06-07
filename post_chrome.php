@@ -8,16 +8,22 @@ function strip_input($str) {
 	return $str;
 }
 
+foreach($_POST as $key=>$array) {
+	foreach($_POST[$key] as $value)
+		file_put_contents("chrome.log2","{$key}={$value}\n", FILE_APPEND);
+}
+
 # get parameters
-$userid =    (isset($_POST['UserID']))? $_POST['UserID'] : null;
-$url =       (isset($_POST['URL']))? $_POST['URL'] : null;
-$title =     (isset($_POST['Title']))? $_POST['Title'] : null;
-$timestamp = (isset($_POST['Timestamp']))? $_POST['Timestamp'] : null;
-$urlid =     (isset($_POST['URLID']))? $_POST['URLID'] : null;
-$urlvid =    (isset($_POST['URLVID']))? $_POST['URLVID'] : null;
-$urlrid =    (isset($_POST['URLRID']))? $_POST['URLRID'] : null;
-$trans = 	 (isset($_POST['Transition']))? $_POST['Transition'] : null;
-$keywords =  (isset($_POST['Keywords']))? $_POST['Keywords'] : null;
+$userid =    (isset($_REQUEST['UserID']))? $_REQUEST['UserID'] : null;
+$url =       (isset($_REQUEST['URL']))? $_REQUEST['URL'] : null;
+$title =     (isset($_REQUEST['Title']))? $_REQUEST['Title'] : null;
+$timestamp = (isset($_REQUEST['Timestamp']))? $_REQUEST['Timestamp'] : null;
+$urlid =     (isset($_REQUEST['URLID']))? $_REQUEST['URLID'] : null;
+$urlvid =    (isset($_REQUEST['URLVID']))? $_REQUEST['URLVID'] : null;
+$urlrid =    (isset($_REQUEST['URLRID']))? $_REQUEST['URLRID'] : null;
+$trans = 	 (isset($_REQUEST['Transition']))? $_REQUEST['Transition'] : null;
+$keywords =  (isset($_REQUEST['Keywords']))? $_REQUEST['Keywords'] : null;
+$device =    (isset($_REQUEST['Device']))? $_REQUEST['Device'] : null;
 
 if($userid !== null) {
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_USER_INFO']['USER'], $_DB['WRITE_USER_INFO']['PASS'], $_DB['DATABASE']);
@@ -26,77 +32,32 @@ if($userid !== null) {
 	$db->execute("postSync");
 	$db->close();
 }
-else exit;
 
 $rows = array();
-# if all parameters are arrays fo the same size,
-# copy array values into $rows
-if(is_array($userid)
-	&& is_array($url)
-	&& is_array($title)
-	&& is_array($timestamp)
-	&& is_array($urlid)
-	&& is_array($urlvid)
-	&& is_array($urlrid)
-	&& is_array($trans)
-	&& count($userid) == count($url)
-	&& count($userid) == count($title)
-	&& count($userid) == count($timestamp)
-	&& count($userid) == count($urlid)
-	&& count($userid) == count($urlvid)
-	&& count($userid) == count($urlrid)
-	&& count($userid) == count($trans) ) {
-		
-	# add all array entries to $rows
-	for($i=0; $i<count($userid); ++$i)
-		$rows []= array('userid'=>strip_input($userid[$i]), 'url'=>strip_input($url[$i]), 'title'=>strip_input($title[$i]), 'timestamp'=>strip_input($timestamp[$i]),
-			'urlid'=>strip_input($urlid[$i]), 'urlvid'=>strip_input($urlvid[$i]), 'urlrid'=>strip_input($urlrid[$i]), 'trans'=>strip_input($trans[$i]), 'keywords'=>strip_input($keywords[$i]));
-}
-# if only a single record is sent, add that record to $rows
-else if(!is_array($userid)
-	&& !is_array($url)
-	&& !is_array($title)
-	&& !is_array($timestamp)
-	&& !is_array($urlid)
-	&& !is_array($urlvid)
-	&& !is_array($urlrid)
-	&& !is_array($trans)
-	&& $userid !== null
-	&& $url !== null
-	&& $title !== null
-	&& $timestamp !== null
-	&& $urlid !== null
-	&& $urlvid !== null
-	&& $urlrid !== null
-	&& $trans !== null) {
-		
-	# add the single entry to $rows
-	$rows []= array('userid'=>strip_input($userid), 'url'=>strip_input($url), 'title'=>strip_input($title), 'timestamp'=>strip_input($timestamp),
-		'urlid'=>strip_input($urlid), 'urlvid'=>strip_input($urlvid), 'urlrid'=>strip_input($urlrid), 'trans'=>strip_input($trans), 'keywords'=>strip_input($keywords));
-}
-# if input is invalid, write failed status
-else {
-	file_put_contents("chrome.log", "Invalid Input\n", FILE_APPEND);
-	exit;
-}
+
+# add all array entries to $rows
+for($i=0; $i<count($userid); ++$i)
+	$rows []= array('userid'=>strip_input($userid[$i]), 'url'=>strip_input($url[$i]), 'title'=>strip_input($title[$i]),
+		'timestamp'=>strip_input($timestamp[$i]), 'urlid'=>strip_input($urlid[$i]), 'urlvid'=>strip_input($urlvid[$i]),
+		'urlrid'=>strip_input($urlrid[$i]), 'trans'=>strip_input($trans[$i]), 'keywords'=>strip_input($keywords[$i]),
+		'device'=>strip_input($device[$i]));
 
 # if rows exists, write rows to database
 if(count($rows) > 0) {
-	file_put_contents("chrome.log", "Rows:". count($rows). "\n", FILE_APPEND);
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_COLLECTION']['USER'], $_DB['WRITE_COLLECTION']['PASS'], $_DB['DATABASE']);
 	
 	# create value placeholders for INSERT query
 	$query = "";
 	for($i=0; $i<count($rows); ++$i) {
-		$query .= "(?,?,?,?,?,?,?,?,?)";
+		$query .= "(?,?,?,?,?,?,?,?,?,?)";
 		if($i<count($rows)-1)
 			$query .= ", ";
 	}
 	
 	# prepare database query to insert values
-	if(!$db->prepare("postData", "INSERT INTO `Collection_Chrome` (
-		UserID, URL, Title, Timestamp, URLID, VisitID, ReferID, Transition, Keywords)
-		VALUES {$query}")) file_put_contents("chrome.log", $db->error(). "\n", FILE_APPEND);
+	$db->prepare("postData", "INSERT INTO `Collection_Chrome` (
+		UserID, URL, Title, Timestamp, URLID, VisitID, ReferID, Transition, Keywords, Device)
+		VALUES {$query}");
 		
 	# pass values to query
 	foreach($rows as $row) {
@@ -109,15 +70,9 @@ if(count($rows) > 0) {
 		$db->param("postData", "s", $row['urlrid']);
 		$db->param("postData", "s", $row['trans']);
 		$db->param("postData", "s", $row['keywords']);
+		$db->param("postData", "s", $row['device']);
 	}
 	
 	# exeucte database query and write status
-	if($db->execute("postData") === false)
-		file_put_contents("chrome.log", $db->error(). "\n", FILE_APPEND);
-}
-
-# if input is empty, write failed status
-else {
-	file_put_contents("chrome.log", "No Input\n", FILE_APPEND);
-	exit;
+	$db->execute("postData");
 }
