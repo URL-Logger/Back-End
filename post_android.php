@@ -2,13 +2,14 @@
 require_once("src/lib/db.php");
 require_once("src/misc/database.php");
 
-file_put_contents("android.log", "");
-foreach($_POST as $key=>$item) {
-	file_put_contents("android.log", "{$key}: ". count($_POST[$key]). "\n", FILE_APPEND);
+function strip_input($str) {
+	$str = htmlspecialchars($str, ENT_QUOTES);
+	$str = str_replace(",", "&#44;", $str);
+	return $str;
 }
 
 # get parameters
-$userid =     (isset($_POST['UserID']))? $_POST['UserID'] : 0;
+$userid =     (isset($_POST['UserID']))? $_POST['UserID'] : null;
 $appid =      (isset($_POST['AppID']))? $_POST['AppID'] : "";
 $appname =    (isset($_POST['AppName']))? $_POST['AppName'] : "";
 $start =      (isset($_POST['StartTime']))? $_POST['StartTime'] : 0;
@@ -22,6 +23,7 @@ if($userid !== null) {
 	$db->param("postSync", "i", is_array($userid)? $userid[0] : $userid);
 	$db->execute("postSync");
 }
+else exit;
 
 # if all parameters are arrays fo the same size,
 # copy array values into $rows
@@ -43,13 +45,13 @@ if(is_array($userid)
 	# add all array entries to $rows
 	for($i=0; $i<count($userid); ++$i) {
 		$rows []= array(
-			'userid'=>htmlspecialchars($userid[$i], ENT_QUOTES),
-			'appid'=>htmlspecialchars($appid[$i], ENT_QUOTES),
-			'appname'=>htmlspecialchars($appname[$i], ENT_QUOTES),
-			'start'=>htmlspecialchars($start[$i], ENT_QUOTES),
-			'end'=>htmlspecialchars($end[$i], ENT_QUOTES),
-			'total'=>htmlspecialchars($total[$i], ENT_QUOTES),
-			'launch'=>htmlspecialchars($launch[$i], ENT_QUOTES)
+			'userid'=>strip_input($userid[$i]),
+			'appid'=>strip_input($appid[$i]),
+			'appname'=>strip_input($appname[$i]),
+			'start'=>strip_input($start[$i]),
+			'end'=>strip_input($end[$i]),
+			'total'=>strip_input($total[$i]),
+			'launch'=>strip_input($launch[$i])
 		);
 	}
 }
@@ -64,13 +66,13 @@ else if(!is_array($userid)
 		
 	# add the single entry to $rows
 	$rows []= array(
-		'userid'=>htmlspecialchars($userid, ENT_QUOTES),
-		'appid'=>htmlspecialchars($appid, ENT_QUOTES),
-		'appname'=>htmlspecialchars($appname, ENT_QUOTES),
-		'start'=>htmlspecialchars($start, ENT_QUOTES),
-		'end'=>htmlspecialchars($end, ENT_QUOTES),
-		'total'=>htmlspecialchars($total, ENT_QUOTES),
-		'launch'=>htmlspecialchars($launch, ENT_QUOTES)
+		'userid'=>strip_input($userid),
+		'appid'=>strip_input($appid),
+		'appname'=>strip_input($appname),
+		'start'=>strip_input($start),
+		'end'=>strip_input($end),
+		'total'=>strip_input($total),
+		'launch'=>strip_input($launch)
 	);
 }
 # if input is invalid and DEBUG is set, write failed status
@@ -97,8 +99,6 @@ if(count($rows) > 0) {
 		
 	# pass values to query
 	foreach($rows as $row) {
-		file_put_contents("error.log", "{$row['userid']} {$row['appid']} {$row['appname']} {$row['start']} {$row['end']} {$row['total']} {$row['launch']}". "\n", FILE_APPEND);
-		
 		$db->param("postData", "i", $row['userid']);
 		$db->param("postData", "s", $row['appid']);
 		$db->param("postData", "s", $row['appname']);

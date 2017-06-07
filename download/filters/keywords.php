@@ -16,7 +16,8 @@ if($mode == "browser") {
 		foreach($split as $item) {
 			$item = trim($item);
 			if($item) {
-				$set .= " and (URL LIKE ? or Title LIKE ?)";
+				$set .= " and (URL LIKE ? or Title LIKE ? or Keywords LIKE ?)";
+				$params []= "%{$item}%";
 				$params []= "%{$item}%";
 				$params []= "%{$item}%";
 			}

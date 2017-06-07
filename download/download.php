@@ -3,7 +3,6 @@ ob_start();
 set_time_limit(0);
 
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
-require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/secure.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
 
 $db = DB::connect($_DB['HOST'], $_DB['READ_COLLECTION']['USER'], $_DB['READ_COLLECTION']['PASS'], $_DB['DATABASE']);

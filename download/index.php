@@ -30,8 +30,9 @@ else exit;
 			#maincontent {
 				display: block;
 				position: relative;
+				top: 0;
 				width: 100%;
-				height: calc(100% - 2em - 2px);
+				height: calc(100% - 32px - 2px);
 				border-left: 1px solid #000;
 				border-right: 1px solid #000;
 				padding: 0;
@@ -84,7 +85,7 @@ else exit;
 				display: block;
 				position: relative;
 				width: 100%;
-				height: calc(100% - 96px - 30px);
+				height: calc(100% - 48px - 42px - 32px);
 				background: <?=$C_TERNARY?>;
 				border-top: 1px solid <?=$C_BORDER?>;
 				border-bottom: 1px solid <?=$C_BORDER?>;
@@ -141,10 +142,11 @@ else exit;
 			}
 			
 			table.preview {
-				min-width: 100%;
+				width: 100%;
 				height: auto;
 				padding: 0;
 				border-collapse: collapse;
+				overflow: hidden;
 			}
 			table.preview td {
 				max-width: 250px;

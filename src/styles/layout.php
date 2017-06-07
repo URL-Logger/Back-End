@@ -6,8 +6,6 @@ $C_BORDER=     "#000000";
 $C_TERNARY=    "#929596";
 ?>
 
-@import url('https://fonts.googleapis.com/css?family=Raleway:500');
-
 ::-webkit-scrollbar { width: 6px; height: 4px; }
 ::-webkit-scrollbar-button { width: 0px; height: 0px; }
 ::-webkit-scrollbar-thumb { background: <?=$C_SECONDARY?>; }
@@ -24,7 +22,7 @@ html, body {
 	background: <?=$C_PRIMARY?>;
 	padding: 0;
 	margin: 0;
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Verdana';
 	font-size: 14px;
 	overflow: auto;
 }
@@ -56,13 +54,6 @@ a.broken {
 	margin: 0 auto;
 }
 
-table {
-	width: 100%;
-}
-tr, td {
-	width: auto;
-}
-
 .menu {
 	display: table;
 	width: 100%;
@@ -80,9 +71,9 @@ tr, td {
 	width: 120px;
 	height: auto;
 	border: 1px solid #000;
-	padding: 3px 18px 0px 18px;
-	line-height: 1.8em;
-	font-size: 14px;
+	padding: 0px 18px 0px 18px;
+	line-height: 2em;
+	font-size: 15px;
 	text-align: center;
 	whitespace: nowrap;
 }

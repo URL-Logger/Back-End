@@ -38,14 +38,16 @@ else if(isset($_POST['submit'])) {
 	</head>
 	<body>
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-		<b>Flush <?php echo ($mode == "browser")? "Browser" : (($mode == "mobile")? "Mobile" : ""); ?> Data</b></br>
-		</br>
-		This will delete all <?=$mode?> data. You may not reverse this action.</br>
-		Are you sure you want to proceed?</br>
-		<br>
-		<form method="POST">
-			<input type="submit" name="submit" value="Delete Collected Data" style="background: #FAA;"/>
-			<input type="submit" name="cancel" value="Cancel Operation"/></br>
-		</form>
+		<div id="maincontent">
+			<b>Flush <?php echo ($mode == "browser")? "Browser" : (($mode == "mobile")? "Mobile" : ""); ?> Data</b></br>
+			</br>
+			This will delete all <?=$mode?> data. You may not reverse this action.</br>
+			Are you sure you want to proceed?</br>
+			<br>
+			<form method="POST">
+				<input type="submit" name="submit" value="Delete Collected Data" style="background: #FAA;"/>
+				<input type="submit" name="cancel" value="Cancel Operation"/></br>
+			</form>
+		</div>
 	</body>
 </html>
