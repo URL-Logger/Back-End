@@ -47,7 +47,7 @@ if($_USER < 0 || !$result) {
 
 $disabled = !(($is_self && has_privilege('M')) || (has_privilege('A')));
 
-if(isset($_POST['submit'])) {
+if(isset($_POST['submit'])) { do {
 	# Get input parameters
 	$name = isset($_POST['name'])? $_POST['name'] : "";
 	$email = isset($_POST['email'])? $_POST['email'] : "";
@@ -79,7 +79,10 @@ if(isset($_POST['submit'])) {
 					$db->execute("setAdminPassword");
 					$db->close();
 				}
-				else $out = "Passwords do not match.";
+				else {
+					$out = "Passwords do not match.";
+					break;
+				}
 			}
 			
 			# Update user's information
@@ -116,10 +119,16 @@ if(isset($_POST['submit'])) {
 			header("Location:../edit/?id={$id}&Created");
 			exit;
 		}
-		else $out = "Passwords do not match.";
+		else {
+			$out = "Passwords do not match.";
+			break;
+		}
 	}
-	else $out = "Email is required.";
-}
+	else {
+		$out = "Email is required.";
+		break;
+	}
+} while(0); }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -133,15 +142,19 @@ if(isset($_POST['submit'])) {
 		</style>
 	</head>
 	<body>
+		<?php
+		if(isset($_GET['Success']))
+			echo "<a class=\"overlay_background\" href=\"?id={$_USER}\"><div class=\"overlay_text\">Account has been successfully modified.</br><span style='font-size: 12px;'>[Click to continue]</span></div></a>";
+		else if(isset($_GET['Created']))
+			echo "<a class=\"overlay_background\" href=\"?id={$_USER}\"><div class=\"overlay_text\">Account has been successfully created.</br><span style='font-size: 12px;'>[Click to continue]</span></div></a>";
+		?>
 		<div id="maincontent">
 			<div class="menu">
 				<a class="button" href="..">Back</a>
 				<div class="spacer"></div>
 			</div>
 			<?php
-			if(isset($_GET['Created'])) $out = "Account has been created.";
-			if(isset($_GET['Success'])) $out = "Account has been updated.";
-			echo isset($out)? $out : "</br>";
+			echo isset($out)? "<span style='color: #F44;'>{$out}</span>" : "</br>";
 			?>
 			<form method="POST">
 				<table class="fieldset">

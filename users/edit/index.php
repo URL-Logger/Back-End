@@ -33,7 +33,7 @@ if($_USER < 0 || !$result) {
 }
 
 $errors = array();
-if(isset($_POST['submit'])) {
+if(isset($_POST['submit'])) { do {
 	# Get input parameters
 	$email = isset($_POST['email'])? $_POST['email'] : "";
 	
@@ -42,26 +42,32 @@ if(isset($_POST['submit'])) {
 	
 	if($email !== "") {
 		if($_USER > 0) {
-			if($newpass && $newpass == $conpass) {
-				$newpass = password_hash($newpass, PASSWORD_BCRYPT);
+			if($newpass) {
+				if($newpass == $conpass) {
+					$newpass = password_hash($newpass, PASSWORD_BCRYPT);
 
-				$DBU = $_DB['WRITE_USER_INFO'];
-				$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-				$db->prepare("setUserPassword", "UPDATE `User_Login` SET Password=? WHERE ID=?");
-				$db->param("setUserPassword", "s", $newpass);
-				$db->param("setUserPassword", "i", $_USER);
-				$db->execute("setUserPassword");
-				$db->close();
-				
-				if($result[0]['RespondentID']) {
-					$DBU = $_DB['ROOT'];
+					$DBU = $_DB['WRITE_USER_INFO'];
 					$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-					$db->prepare("setRespondentPassword", "UPDATE `respondents` SET password=? WHERE respondent_id=?");
-					$db->param("setRespondentPassword", "s", $newpass);
-					$db->param("setRespondentPassword", "s", $result[0]['RespondentID']);
-					$db->execute("setRespondentPassword");
-					$id = $db->id();
+					$db->prepare("setUserPassword", "UPDATE `User_Login` SET Password=? WHERE ID=?");
+					$db->param("setUserPassword", "s", $newpass);
+					$db->param("setUserPassword", "i", $_USER);
+					$db->execute("setUserPassword");
 					$db->close();
+					
+					if($result[0]['RespondentID']) {
+						$DBU = $_DB['ROOT'];
+						$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
+						$db->prepare("setRespondentPassword", "UPDATE `respondents` SET password=? WHERE respondent_id=?");
+						$db->param("setRespondentPassword", "s", $newpass);
+						$db->param("setRespondentPassword", "s", $result[0]['RespondentID']);
+						$db->execute("setRespondentPassword");
+						$id = $db->id();
+						$db->close();
+					}
+				}
+				else {
+					$errors []= "UnmatchedPasswords";
+					break;
 				}
 			}
 			
@@ -103,10 +109,16 @@ if(isset($_POST['submit'])) {
 			header("Location:?id={$id}&Created");
 			exit;
 		}
-		else $errors []= "UnmatchedPasswords";
+		else {
+			$errors []= "UnmatchedPasswords";
+			break;
+		}
 	}
-	else $errors []= "EmailRequired";
-}
+	else {
+		$errors []= "EmailRequired";
+		break;
+	}
+} while(0); }
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -120,24 +132,26 @@ if(isset($_POST['submit'])) {
 		</style>
 	</head>
 	<body>
+		<?php
+		if(isset($_GET['Success']))
+			echo "<a class=\"overlay_background\" href=\"?id={$_USER}\"><div class=\"overlay_text\">Account has been successfully modified.</br><span style='font-size: 12px;'>[Click to continue]</span></div></a>";
+		else if(isset($_GET['Created']))
+			echo "<a class=\"overlay_background\" href=\"?id={$_USER}\"><div class=\"overlay_text\">Account has been successfully created.</br><span style='font-size: 12px;'>[Click to continue]</span></div></a>";
+		?>
 		<div id="maincontent">
 			<div class="menu">
 				<a class="button" href="..">Back</a>
 				<div class="spacer"></div>
 			</div>
 			<?php
-			if(isset($_GET['Success']))
-				$out = "Account has been updated.</br>";
-			else if(isset($_GET['Created']))
-				$out = "Account has been created.</br>";
-			else if(count($errors) > 0) {
+			if(count($errors) > 0) {
 				# Display errors
 				if(in_array("EmailRequired", $errors))
-					$out = "An email is required.";
+					$out = "An email address is required.";
 				if(in_array("UnmatchedPasswords", $errors))
 					$out = "Passwords do not match.";
 			}
-			echo isset($out)? $out : "</br>";
+			echo isset($out)? "<span style='color: #F44;'>{$out}</span>" : "</br>";
 			?>
 			
 			<form method="POST">

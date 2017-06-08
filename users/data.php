@@ -13,36 +13,64 @@ $download = isset($_REQUEST['download']);
 $limit = (isset($_REQUEST['limit']) && intval($_REQUEST['limit']) > 0)? "LIMIT ". intval($_REQUEST['limit']) : "";
 
 $clause = "WHERE 1";
+$order = "";
 $params = array();
 
+if(!empty($_POST['user'])) {
+	$items = explode(" ", $_POST['user']);
+	$sub = "0";
+	foreach($items as $item) {
+		$item = trim($item);
+		if($item !== "") {
+			$sub .= " OR (Email=? OR ID=?)";
+			$params []= $item;
+			$params []= $item;
+		}
+	}
+	if($sub != "0")
+		$clause .= " AND {$sub}";
+}
 
+if(!empty($_POST['usage'])) {
+	if($_POST['usage'] == "never") {
+		if(!empty($_POST['platform'])) {
+			if($_POST['platform'] == "browser")
+				$clause .= " AND (LastSyncBrowser=0)";
+			else
+				$clause .= " AND (LastSyncMobile=0)";
+		}
+		else
+			$clause .= " AND (LastSyncBrowser=0 AND LastSyncMobile=0)";
+	}
+	else if(!empty($_POST['date'])){
+		$compare = ($_POST['usage'] == "active")? ">=" : "<";
+		if(!empty($_POST['platform'])) {
+			if($_POST['platform'] == "browser") {
+				$clause .= " AND (LastSyncBrowser{$compare}?)";
+				$order = "LastSyncBrowser DESC";
+			}
+			else {
+				$clause .= " AND (LastSyncMobile{$compare}?)";
+				$order = "LastSyncMobile DESC";
+			}
+			$params []= $_POST['date'];
+		}
+		else {
+			$clause .= " AND (LastSyncBrowser{$compare}? OR LastSyncMobile{$compare}?)";
+			$order = "GREATEST(LastSyncBrowser, LastSyncMobile) DESC";
+			$params []= $_POST['date'];
+			$params []= $_POST['date'];
+		}
+	}
+}
 
-if(! $db->prepare("getData", "SELECT * FROM `User_Login` {$clause} {$limit}"))
+if($order) $order = "ORDER BY {$order}";
+
+if(! $db->prepare("getData", "SELECT * FROM `User_Login` {$clause} {$order} {$limit}"))
 	die($db->error());
 foreach($params as $param)
 	$db->param("getData", "s", $param);
 $result = $db->execute("getData");
-/*
-$line = "";
-if(!$download)  echo "<tr>";
-for($i=0; $i<count($columns); ++$i) {
-	if(!( ($columns[$i] == "ID")
-		|| ($mode == "mobile" && $columns[$i] == "LastTime") )) {
-		if(!$download)  echo "<td class='header'>{$columns[$i]}</td>";
-		else {
-			$line .= $columns[$i];
-			if($d < count($columns)-1)
-				$line .= ",";
-		}
-	}
-	else
-		$ignore_cols []= $i;
-}
-if($preview) echo "</tr>";
-else {
-	$line .= "\n";
-	file_put_contents($file, $line);
-}*/
 
 if($result !== null) {
 	if(!$download) {
@@ -53,14 +81,15 @@ if($result !== null) {
 			echo "<th>Email</th>";
 			echo "<th>Browser Sync</th>";
 			echo "<th>Mobile Sync</th>";
+			echo "<th></th>";
 		echo "</tr>";
 		
 		foreach($result as $row) {
 			$sync_browser_time = (strtotime($row['LastSyncBrowser']) > 0)?
 				date("Y-m-d H:i", strtotime($row['LastSyncBrowser']))
 				: "Never";
-			$sync_mobile_time = (strtotime($row['LastSyncBrowser']) > 0)?
-				date("Y-m-d H:i", strtotime($row['LastSyncBrowser']))
+			$sync_mobile_time = (strtotime($row['LastSyncMobile']) > 0)?
+				date("Y-m-d H:i", strtotime($row['LastSyncMobile']))
 				: "Never";
 			
 			echo "<tr>";
@@ -69,6 +98,7 @@ if($result !== null) {
 				echo "<td>{$row['Email']}</td>";
 				echo "<td>{$sync_browser_time}</td>";
 				echo "<td>{$sync_mobile_time}</td>";
+				echo "<td style=\"text-align: right;\"><a href=\"edit/?id={$row['ID']}\">Edit</a></td>";
 			echo "</tr>";
 		}
 		
@@ -86,14 +116,6 @@ if($result !== null) {
 			$sync_mobile_time = (strtotime($row['LastSyncBrowser']) > 0)?
 				date("Y-m-d H:i", strtotime($row['LastSyncBrowser']))
 				: "Never";
-			
-			echo "<tr>";
-				echo "<td>{$row['ID']}</td>";
-				echo "<td>{$row['RespondentID']}</td>";
-				echo "<td>{$row['Email']}</td>";
-				echo "<td>{$sync_browser_time}</td>";
-				echo "<td>{$sync_mobile_time}</td>";
-			echo "</tr>";
 			file_put_contents($file, "{$row['ID']},{$row['RespondentID']},{$row['Email']},{$row['LastSyncBrowser']},{$row['LastSyncMobile']}\n", FILE_APPEND);
 		}
 		

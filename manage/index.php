@@ -43,6 +43,9 @@ else {
 			background: <?=$C_PRIMARY?>;
 		}
 		
+		table {
+			width: 100%;
+		}
 		table tr.header td {
 			font-weight: bold;
 		}

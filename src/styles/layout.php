@@ -30,10 +30,7 @@ html, body {
 a {
 	color: <?=$C_SECONDARY?>;
 	text-decoration: none;
-}
-
-a.broken {
-	color: #F44;
+	cursor: pointer;
 }
 
 #container {
@@ -78,36 +75,8 @@ a.broken {
 	whitespace: nowrap;
 }
 
-
-.boxmenu {
-	display: block;
-	position: relative;
-	font-size: 0;
-	text-align: center;
-}
-
-.boxmenu .button {
-	display: inline-block;
-	position: relative;
-	width: 25%;
-	height: 224px;
-	background: <?=$C_SECONDARY?>;
-	border: 1px solid <?=$C_BORDER?>;
-	border-radius: 32px;
-	color: <?=$C_PRIMARY?>;
-	margin: 1%;
-	line-height: 223px;
-	font-size: 14px;
-	vertical-align: top;
-}
-
-.boxmenu .button.disabled {
-	background: <?=$C_TERNARY?>;
-	opacity: 0.25;
-}
-
 .fieldset {
-	width: auto;
+	width: 100%;
 	font-size: 14px;
 }
 .fieldset tr.spacer {
@@ -123,13 +92,46 @@ a.broken {
 	padding: 0;
 	font-size: 14px;
 }
-.fieldset input {
+.fieldset input, select {
+	width: 100%;
 	border: 1px solid <?=$C_BORDER?>;
 	padding: 3px 6px 3px 6px;
+	line-height: 1.6em;
 	font-size: 14px;
 }
-.fieldset input[type='submit'] {
-	width: 256px;
+.fieldset input[type=button], .fieldset input[type=submit] {
+	background: <?=$C_SECONDARY?>;
+	color: <?=$C_PRIMARY?>;
+}
+.fieldset input[type=checkbox], .fieldset input[type=radio] {
+	width: 3em;
+}
+
+.overlay_background {
+	display: block;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.8);
+	text-align: center;
+	vertical-align: middle;
+}
+
+.overlay_text {
+	display: inline-block;
+	position: relative;
+	top: 45%;
+	width: auto;
+	height: auto;
+	background: <?=$C_PRIMARY?>;
+	border-radius: 4px;
+	padding: 12px 24px 12px 24px;
+	margin: 0 auto;
+	line-height: 1.5em;
+	text-align: center;
 }
 
 <?php include("menu.php"); ?>

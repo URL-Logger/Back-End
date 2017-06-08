@@ -1,10 +1,5 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
-
 deny_on('u');
-
-$DBU = $_DB['READ_USER_LOGIN'];
-$db = DB::connect($_DB['HOST'], $DBU['USER'], $DBU['PASS'], $_DB['DATABASE']);
-$result = $db->query("SELECT ID, Email, LastSyncBrowser, LastSyncMobile FROM `User_Login` ORDER BY ID");
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -15,71 +10,110 @@ $result = $db->query("SELECT ID, Email, LastSyncBrowser, LastSyncMobile FROM `Us
 		body {
 			background: <?=$C_PRIMARY?>;
 		}
+		table {
+			width: 100%;
+		}
 		table tr.header td {
 			font-weight: bold;
 		}
 		table tr td {
 			padding: 2px 8px 2px 8px;
+			text-align: left;
+		}
+		table tr th {
+			padding: 2px 8px 2px 8px;
+			text-align: left;
+		}
+		
+		.region {
+			display: block;
+			position: relative;
+			width: 100%;
+			height: 100%;
 		}
 		
 		.popup {
 			display: none;
 			position: absolute;
-			top: 2em;
+			top: 30px;
 			right: -1px;
-			width: 256px;
-			height: 512px;
+			width: 241px;
+			height: auto;
 			background: <?=$C_PRIMARY?>;
 			border: 1px solid <?=$C_BORDER?>;
 			color: #000;
 			padding: 3px 6px 3px 6px;
+			marign: 0;
 			line-height: 1.4em;
 			text-align: left;
 		}
+		
 		</style>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		<script>
+		function update() {
+			$.post("data.php",
+				$("#filters").serialize(),
+				function(data) {
+					document.getElementById("data").innerHTML = data;
+			});
+		}
+		
+		function fn_download() {
+			document.getElementById("filters").submit();
+		}
+		
+		function toggle(id) {
+			var obj = document.getElementById(id);
+			if(obj.style.display != "block")
+				obj.style.display = "block";
+			else
+				obj.style.display = "none";
+		}
+		
+		$(document).ready(function() {
+			$(window).keydown(function(event){
+				if(event.keyCode == 13) {
+					event.preventDefault();
+					return false;
+				}
+			});
+		});
+		</script>
 	</head>
-	<body>
+	<body onload="update()">
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
 		
 		<div id="maincontent">
 			<div class="menu">
 				<a class="button" href="add/">Add User</a>
 				<div class="spacer"></div>
-				<div class="button broken" href="">Export</div>
-				<div class="button broken" href="">Filter<div class="popup">
-					Filters</br>
-					Limit:</br>
-					<input type="text" value="150">
+				<a class="button" href="#" onclick="fn_download()">Export</a>
+				<div class="button" href="#"><a class="region" onclick="toggle('pop_filters');">Filter</a>
+				<div id="pop_filters" class="popup">
+					<form id="filters" method="POST" action="data.php?download" target="_blank">
+						<table class="fieldset">
+							<tr><th></th> <td><input type="button" value="Apply" onclick="update()"/></td></tr>
+							
+							<tr><th>Limit</th> <td><input type="text" name="limit" value="150"/></td></tr>
+							<tr caption="ID or Email"><th>User</th> <td><input type="text" name="user"/></td></tr>
+							<tr><th>Usage</th> <td><select name="usage">
+									<option value="">Select Usage</option>
+									<option value="active">Active since</option>
+									<option value="inactive">Inactive since</option>
+									<option value="never">Never active</option>
+								</select></td></tr>
+							<tr><th></th> <td><input type="date" name="date"/></td></tr>
+							<tr><th></th> <td><select name="platform">
+									<option value="">Platform (Either)</option>
+									<option value="browser">Browser</option>
+									<option value="mobile">Mobile</option>
+								</select></td></tr>
+						</table>
+					</form>
 				</div></div>
 			</div></br>
 			<div id="data">
-			<table>
-				<tr class="header">
-					<td>ID</td>
-					<td>Account</td>
-					<td>Browser Sync</td>
-					<td>Mobile Sync</td>
-					<td></td>
-					<td></td>
-				</tr>
-			<?php
-			if($result) {
-				foreach($result as $entry) {
-					$sync_browser = (strtotime($entry['LastSyncBrowser']) > 0)? date("M d, Y H:m", strtotime($entry['LastSyncBrowser'])) : "Never";
-					$sync_mobile = (strtotime($entry['LastSyncMobile']) > 0)? date("M d, Y H:m", strtotime($entry['LastSyncMobile'])) : "Never";
-					echo "<tr>
-						<td>{$entry['ID']}</td>
-						<td>{$entry['Email']}</td>
-						<td>{$sync_browser}</td>
-						<td>{$sync_mobile}</td>
-						<td style=\"text-align: right;\">
-							<a href=\"/users/edit/?id={$entry['ID']}\">Edit</a> | 
-							<a href=\"/users/delete/?id={$entry['ID']}\">Delete</a>
-						</td>
-					</tr>";
-				}
-			}
-			?></table>
 			</div>
 		</div>
 	</body>
