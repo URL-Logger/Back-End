@@ -75,10 +75,6 @@ else if(!is_array($userid)
 		'launch'=>strip_input($launch)
 	);
 }
-# if input is invalid and DEBUG is set, write failed status
-else if(isset($_POST['DEBUG'])) {
-	echo "Invalid Input";
-}
 
 # if rows exists, write rows to database
 if(count($rows) > 0) {
@@ -109,16 +105,5 @@ if(count($rows) > 0) {
 	}
 	
 	# exeucte database query and write status
-	if($db->execute("postData") !== false) {
-		echo count($rows);
-	}
-	else {
-		echo 0;
-		file_put_contents("error.log", $db->error(). "\n", FILE_APPEND);
-	}
-}
-
-# if input is empty and DEBUG is set, write failed status
-else if(isset($_POST['DEBUG'])) {
-	echo "No Input";
+	$db->execute("postData");
 }

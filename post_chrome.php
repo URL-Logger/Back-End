@@ -4,13 +4,8 @@ require_once("src/misc/database.php");
 
 function strip_input($str) {
 	$str = htmlspecialchars($str, ENT_QUOTES);
-	$str = str_replace(",", "&#44;", $str);
+	$str = str_replace(',', "&#44;", $str);
 	return $str;
-}
-
-foreach($_POST as $key=>$array) {
-	foreach($_POST[$key] as $value)
-		file_put_contents("chrome.log2","{$key}={$value}\n", FILE_APPEND);
 }
 
 # get parameters
@@ -25,6 +20,14 @@ $trans = 	 (isset($_REQUEST['Transition']))? $_REQUEST['Transition'] : null;
 $keywords =  (isset($_REQUEST['Keywords']))? $_REQUEST['Keywords'] : null;
 $device =    (isset($_REQUEST['Device']))? $_REQUEST['Device'] : null;
 
+file_put_contents("chrome.log", "--------\n", FILE_APPEND);
+foreach($_POST as $key=>$array) {
+	file_put_contents("chrome.log", "{$key}[". count($_POST[$key]). "]=", FILE_APPEND);
+	foreach($array as $value)
+		file_put_contents("chrome.log", "{$value}, ", FILE_APPEND);
+	file_put_contents("chrome.log", "\n", FILE_APPEND);
+}
+
 if($userid !== null) {
 	$db = DB::connect($_DB['HOST'], $_DB['WRITE_USER_INFO']['USER'], $_DB['WRITE_USER_INFO']['PASS'], $_DB['DATABASE']);
 	$db->prepare("postSync", "UPDATE `User_Login` SET LastSyncBrowser=NOW() WHERE ID=?");
@@ -36,11 +39,21 @@ if($userid !== null) {
 $rows = array();
 
 # add all array entries to $rows
-for($i=0; $i<count($userid); ++$i)
-	$rows []= array('userid'=>strip_input($userid[$i]), 'url'=>strip_input($url[$i]), 'title'=>strip_input($title[$i]),
-		'timestamp'=>strip_input($timestamp[$i]), 'urlid'=>strip_input($urlid[$i]), 'urlvid'=>strip_input($urlvid[$i]),
-		'urlrid'=>strip_input($urlrid[$i]), 'trans'=>strip_input($trans[$i]), 'keywords'=>strip_input($keywords[$i]),
-		'device'=>strip_input($device[$i]));
+for($i=0; $i<count($userid); ++$i) {
+	if($userid[$i] > 0) {
+		$rows []= array('userid'=>strip_input($userid[$i]), 'url'=>strip_input($url[$i]), 'title'=>strip_input($title[$i]),
+			'timestamp'=>strip_input($timestamp[$i]), 'urlid'=>strip_input($urlid[$i]), 'urlvid'=>strip_input($urlvid[$i]),
+			'urlrid'=>strip_input($urlrid[$i]), 'trans'=>strip_input($trans[$i]), 'keywords'=>strip_input($keywords[$i]),
+			'device'=>strip_input($device[$i]));
+	}
+}
+
+foreach($rows as $row) {
+	file_put_contents("chrome.log","?", FILE_APPEND);
+	foreach($row as $key=>$value)
+		file_put_contents("chrome.log","\t{$key}={$value}\n", FILE_APPEND);
+	file_put_contents("chrome.log","\n", FILE_APPEND);
+}
 
 # if rows exists, write rows to database
 if(count($rows) > 0) {
@@ -73,6 +86,8 @@ if(count($rows) > 0) {
 		$db->param("postData", "s", $row['device']);
 	}
 	
-	# exeucte database query and write status
-	$db->execute("postData");
+	if($db->execute("postData") !== false)
+		file_put_contents("chrome.log","Successfully added ". count($rows) ." rows\n", FILE_APPEND);
+	else
+		file_put_contents("error.log", $db->error(). "\n", FILE_APPEND);
 }

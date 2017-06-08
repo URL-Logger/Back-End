@@ -44,7 +44,7 @@
 	</head>
 	<body>
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-		<div class="boxmenu" style="top: 2%;">
+		<div class="boxmenu" style="top: 47%; transform: translateY(-50%);">
 			<?php
 			if(has_privilege("u"))
 				echo "<a class=\"button\" href=\"users/\" style=\"background-image: url('/src/images/graphics/users.png');\">User Accounts</a>";

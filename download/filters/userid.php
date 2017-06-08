@@ -4,7 +4,7 @@
 #   $clause  ->  SQL query WHERE clause
 #   $params  ->  Parameters to pass to SQL
 
-$f_data = (!empty($_POST['userid']))? $_POST['userid'] : array();
+$f_data = (isset($_POST['userid']) && $_POST['userid'] != "")? $_POST['userid'] : array();
 $set = "";
 foreach($f_data as $filter) {
 	if($set != "") $set .= " or ";

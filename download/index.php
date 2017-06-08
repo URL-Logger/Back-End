@@ -146,17 +146,19 @@ else exit;
 				height: auto;
 				padding: 0;
 				border-collapse: collapse;
+				table-layout:fixed;
 				overflow: hidden;
 			}
 			table.preview td {
-				max-width: 250px;
+				width: auto;
 				border-left: 1px solid #E0E0E0;
 				border-right: 1px solid #E0E0E0;
 				border-bottom: 1px solid <?=$C_TERNARY?>;
 				font-size: 14px;
 				padding: 4px 8px 4px 8px;
 				white-space: pre;
-				overflow: auto;
+				overflow-y: hidden;
+				overflow-x: auto;
 			}
 			table.preview td.header {
 				font-weight: bold;
