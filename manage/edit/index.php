@@ -178,6 +178,11 @@ if(isset($_POST['submit'])) { do {
 					<tr> <td></td> <td><?php if(!$disabled) echo "<input type=\"submit\" name=\"submit\" value='". (($_USER > 0)? "Save" : "Create"). "'". (($disabled)? " disabled" : ""). "/></br>"; ?></td> </tr>
 				</table>
 			</form>
+			</br>
+			<?php
+			if(!$is_self && $_USER != 1 && has_privilege("A"))
+				echo "<a href=\"../delete/?id={$_USER}\">Delete Account</a></br>";
+			?>
 		</div>
 	</body>
 </html>

@@ -164,6 +164,8 @@ if(isset($_POST['submit'])) { do {
 					<tr> <td></td> <td><input type="submit" name="submit" value="<?php echo ($_USER > 0)? "Save" : "Create"; ?>"/></td> </tr>
 				</table>
 			</form>
+			</br>
+			<a href="../delete/?id=<?=$_USER?>">Delete Account</a></br>
 		</div>
 	</body>
 </html>

@@ -80,8 +80,6 @@ else {
 							<td>{$entry['Name']}</td>
 							<td style=\"text-align: right;\">
 							<a href=\"edit/?id={$entry['ID']}\">Edit</a>";
-						if($entry['ID'] != 1)
-							echo " | <a href=\"delete/?id={$entry['ID']}\">Delete</a>";
 						echo "</td></tr>";
 					}
 				}

@@ -45,16 +45,17 @@ if(isset($_POST['delete'])) {
 	</head>
 	<body>
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
-		
-		Are you sure you want to delete the following user?</br>
-		<?php
-		echo "ID: {$result[0]['ID']}</br>";
-		echo "Email: {$result[0]['Email']}</br>";
-		?>
-		</br>
-		<form method="POST">
-			<input type="submit" name="delete" value="Delete User" style="background: #FAA;"/>
-			<input type="submit" name="cancel" value="Cancel Operation"/>
-		</form>
+		<div id="maincontent">
+			Are you sure you want to delete the following user?</br>
+			<?php
+			echo "ID: {$result[0]['ID']}</br>";
+			echo "Email: {$result[0]['Email']}</br>";
+			?>
+			</br>
+			<form method="POST">
+				<input type="submit" name="delete" value="Delete User" style="background: #FAA;"/>
+				<input type="submit" name="cancel" value="Cancel Operation"/>
+			</form>
+		</div>
 	</body>
 </html>
