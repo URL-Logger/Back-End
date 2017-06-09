@@ -147,10 +147,10 @@ else exit;
 				height: auto;
 				padding: 0;
 				border-collapse: collapse;
-				table-layout:fixed;
 				overflow: hidden;
 			}
 			table.preview td {
+				max-width: 200px;
 				border-left: 1px solid #E0E0E0;
 				border-right: 1px solid #E0E0E0;
 				border-bottom: 1px solid <?=$C_TERNARY?>;
