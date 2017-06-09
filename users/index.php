@@ -86,7 +86,7 @@ deny_on('u');
 		
 		<div id="maincontent">
 			<div class="menu">
-				<a class="button" href="add/">Add User</a>
+				<?php if(has_privilege("U")) echo "<a class=\"button\" href=\"add/\">New</a>"; ?>
 				<div class="spacer"></div>
 				<a class="button" href="#" onclick="fn_download()">Export</a>
 				<div class="button" href="#"><a class="region" onclick="toggle('pop_filters');">Filter</a>

@@ -4,6 +4,7 @@ set_time_limit(0);
 
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
+require_once("{$_SERVER['DOCUMENT_ROOT']}/src/scripts/user.php");
 
 # Connect to database
 $db = DB::connect($_DB['HOST'], $_DB['READ_USER_LOGIN']['USER'], $_DB['READ_USER_LOGIN']['PASS'], $_DB['DATABASE']);
@@ -14,10 +15,7 @@ $page = isset($_REQUEST['page'])? $_REQUEST['page'] : 1;
 $download = isset($_REQUEST['download']);
 
 # Set the limit of the number of rows
-$limit = (isset($_REQUEST['limit']) && intval($_REQUEST['limit']) > 0)?
-	($download)? "LIMIT ". intval($_REQUEST['limit'])
-		: min(intval($_REQUEST['limit']), 50);
-	: "";
+$limit = (isset($_REQUEST['limit']) && intval($_REQUEST['limit']) > 0)? "LIMIT ". intval($_REQUEST['limit']) : "";
 
 $clause = "WHERE 1";
 $order = "";
@@ -111,20 +109,10 @@ if($result !== null) {
 				echo "<td>{$row['Email']}</td>";
 				echo "<td>{$sync_browser_time}</td>";
 				echo "<td>{$sync_mobile_time}</td>";
-				echo "<td style=\"text-align: right;\"><a href=\"edit/?id={$row['ID']}\">Edit</a></td>";
+				if(has_privilege("U")) echo "<td style=\"text-align: right;\"><a href=\"edit/?id={$row['ID']}\">Edit</a></td>";
 			echo "</tr>";
 		}
 		echo "</table></br>";
-		
-		$pages = 4;
-		# Output paging links
-		if($pages >= 10) {
-			
-		}
-		else {
-			for($i=1; $i<=$pages; ++$i)
-				echo "<a href=\"#\">{$i}</a>";
-		}
 	}
 	
 	# Output download file

@@ -1,6 +1,8 @@
 <?php
+# This file is called by the download page.
+# It creates a preview of the data or a downloadable file.
+
 ob_start();
-set_time_limit(0);
 
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/lib/db.php");
 require_once("{$_SERVER['DOCUMENT_ROOT']}/src/misc/database.php");
@@ -38,8 +40,10 @@ else exit;
 $clause = "WHERE 1";
 $params = array();
 
+# Import filter handling scripts
 require_once("filters/filters.php");
 
+# Query the database for filtered data
 $db->prepare("getFields", "SELECT * FROM `{$dataset}` LIMIT 1");
 if(! $db->prepare("getData", "SELECT * FROM `{$dataset}` {$clause} ORDER BY `{$orderby}` DESC {$clause_limit}"))
 	die($db->error());
@@ -56,12 +60,14 @@ if(!$preview) {
 
 $ignore_cols = array();
 
+# Output the table headers
 if($preview) echo "<table class='preview'>";
 $line = "";
 if($preview) echo "<tr>";
 for($i=0; $i<count($columns); ++$i) {
 	if(!( ($columns[$i] == "ID")
 		|| ($mode == "mobile" && $columns[$i] == "LastTime") )) {
+			
 		if($preview) echo "<td class='header'>{$columns[$i]}</td>";
 		else {
 			$line .= $columns[$i];
@@ -78,6 +84,7 @@ else {
 	file_put_contents($file, $line);
 }
 
+# Output the data to a CSV file or HTML table
 if($result !== null) {
 	for($i=0; $i<count($result); ++$i) {
 		$line = "";
@@ -102,7 +109,9 @@ if($result !== null) {
 }
 if($preview) echo "</table>";
 
+# Download the file, if not previewing
 if(!$preview) {
+	set_time_limit(0);
 	header("Content-disposition: attachment; filename='{$file}");
 	ob_end_clean();
 	readfile($file);

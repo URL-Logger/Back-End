@@ -61,12 +61,15 @@ a {
 .menu .spacer {
 	display: table-cell;
 	width: auto;
+	height: 2em;
+	border: 1px solid #000;
+	font-size: 15px;
 }
 .menu .button {
 	display: table-cell;
 	position: relative;
 	width: 120px;
-	height: auto;
+	height: 2em;
 	border: 1px solid #000;
 	padding: 0px 18px 0px 18px;
 	line-height: 2em;

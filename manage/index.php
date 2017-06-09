@@ -61,7 +61,7 @@ else {
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
 		<div id="maincontent">
 			<div class="menu">
-				<a class="button" href="add/">New</a>
+				<?php if(has_privilege("A")) echo "<a class=\"button\" href=\"add/\">New</a>"; ?>
 				<div class="spacer"></div>
 			</div>
 			</br>
@@ -78,8 +78,8 @@ else {
 						echo "<tr>
 							<td>{$entry['Email']}</td>
 							<td>{$entry['Name']}</td>
-							<td style=\"text-align: right;\">
-							<a href=\"edit/?id={$entry['ID']}\">Edit</a>";
+							<td style=\"text-align: right;\">";
+						if(has_privilege("A")) echo "<a href=\"edit/?id={$entry['ID']}\">Edit</a>";
 						echo "</td></tr>";
 					}
 				}

@@ -34,11 +34,13 @@
 				line-height: 2.2em;
 				font-size: 14px;
 				vertical-align: top;
+				cursor: pointer;
 			}
 			
 			.boxmenu .button.disabled {
 				background-color: <?=$C_TERNARY?>;
 				opacity: 0.5;
+				cursor: default;
 			}
 		</style>
 	</head>
@@ -46,6 +48,7 @@
 		<?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/menu.php"); ?>
 		<div class="boxmenu" style="top: 47%; transform: translateY(-50%);">
 			<?php
+			# Display box buttons
 			if(has_privilege("u"))
 				echo "<a class=\"button\" href=\"users/\" style=\"background-image: url('/src/images/graphics/users.png');\">User Accounts</a>";
 			else

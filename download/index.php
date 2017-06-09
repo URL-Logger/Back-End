@@ -1,6 +1,7 @@
 <?php require_once("{$_SERVER['DOCUMENT_ROOT']}/src/header.php");
 deny_on('D');
 
+# Get data source
 if(isset($_GET['browser']))
 	$dataset = "browser";
 else if(isset($_GET['mobile']))
@@ -150,12 +151,11 @@ else exit;
 				overflow: hidden;
 			}
 			table.preview td {
-				width: auto;
 				border-left: 1px solid #E0E0E0;
 				border-right: 1px solid #E0E0E0;
 				border-bottom: 1px solid <?=$C_TERNARY?>;
 				font-size: 14px;
-				padding: 4px 8px 4px 8px;
+				padding: 4px;
 				white-space: pre;
 				overflow-y: hidden;
 				overflow-x: auto;
